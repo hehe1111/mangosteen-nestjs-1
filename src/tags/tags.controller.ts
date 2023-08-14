@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
@@ -8,7 +8,7 @@ export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
   @Post()
-  create(@Body() createTagDto: CreateTagDto) {
+  create(@Body(ValidationPipe) createTagDto: CreateTagDto) {
     return this.tagsService.create(createTagDto);
   }
 
@@ -23,7 +23,7 @@ export class TagsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+  update(@Param('id') id: string, @Body(ValidationPipe) updateTagDto: UpdateTagDto) {
     return this.tagsService.update(+id, updateTagDto);
   }
 
