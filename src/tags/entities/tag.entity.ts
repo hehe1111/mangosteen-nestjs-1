@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-import KindEnum from './kind.enum';
+import KindEnum from '../enum/kind.enum';
 
 @Entity('tags')
 export class TagEntity {
@@ -17,35 +17,35 @@ export class TagEntity {
   // @ManyToOne(() => User)
   @Column({
     type: 'bigint',
-    comment: '用户 ID'
+    comment: '用户 ID',
   })
-  userId: number
+  userId: number;
 
   @Column({
     length: 8,
-    comment: '标签名称'
+    comment: '标签名称',
   })
-  name: string
+  name: string;
 
   @Column({
     length: 8,
-    comment: '标签图标'
+    comment: '标签图标',
   })
-  sign: string
+  sign: string;
 
   @Column({
     type: 'enum',
     enum: KindEnum,
-    comment: '标签收支类型'
+    comment: '标签收支类型',
   })
-  kind: KindEnum
+  kind: KindEnum;
 
   @DeleteDateColumn({
     type: 'datetime',
     nullable: true,
     comment: '标签删除时间',
   })
-  deletedAt: Date
+  deletedAt: Date;
 
   @CreateDateColumn({
     comment: '标签创建时间',
