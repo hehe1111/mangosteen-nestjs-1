@@ -5,7 +5,6 @@ import { TagEntity } from './entities/tag.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm'
 
-
 // TODO: 错误处理
 // name 过长
 // sign 过长
@@ -56,16 +55,6 @@ export class TagsService {
   }
 
   remove(id: number) {
-    // ! delete 会直接删除记录
-    // return this.tagRepository.delete(id)
-    // 成功结果示例
-    // {
-    //   "raw": [],
-    //   "affected": 1
-    // }
-    // ! 软删除
-    this.tagRepository.save({ id, deletedAt: new Date() })
-    // ! save 只返回了部分字段，故重新查找
-    return this.tagRepository.findOneBy({ id })
+    return this.tagRepository.softDelete(id)
   }
 }

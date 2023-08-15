@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import KindEnum from './kind.enum';
 
@@ -39,7 +40,7 @@ export class TagEntity {
   })
   kind: KindEnum
 
-  @Column({
+  @DeleteDateColumn({
     type: 'datetime',
     nullable: true,
     comment: '标签删除时间',
