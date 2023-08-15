@@ -14,16 +14,8 @@ export class TagsService {
   @InjectRepository(TagEntity)
   private tagRepository: Repository<TagEntity>;
 
-  async create(createTagDto: CreateTagDto) {
-    // const newTag = this.tagRepository.create();
-    // newTag.userId = createTagDto.userId
-    // newTag.name = createTagDto.name
-    // newTag.sign = createTagDto.sign
-    // newTag.kind = createTagDto.kind; // Assign an enum value
-    // 以上等效于
-    const newTag = this.tagRepository.create(createTagDto);
-    await this.tagRepository.save(newTag);
-    return newTag;
+  create(createTagDto: CreateTagDto) {
+    return this.tagRepository.save(createTagDto);
   }
 
   findAll() {
