@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TagsModule } from './tags/tags.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -13,8 +13,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: '111111',
       database: 'mangosteen',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // Note: This option auto-creates tables (don't use in production)
+      logging: true,
+      entities: [__dirname + '/**/*.entity.ts'],
+      migrations: [],
+      subscribers: [],
+      poolSize: 10,
+      connectorPackage: 'mysql2',
+      extra: {
+        authPlugin: 'sha256_password',
+      },
     }),
     TagsModule,
   ],
