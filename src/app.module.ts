@@ -15,14 +15,19 @@ import { TagsModule } from './tags/tags.module';
       database: 'mangosteen',
       synchronize: true, // Note: This option auto-creates tables (don't use in production)
       logging: true,
-      entities: [__dirname + '/**/*.entity.ts'],
+      // ! 必须要用 .js 不能用 .ts
+      // ! 否则会报 `EntityMetadataNotFoundError: No metadata for "TagEntity" was found.`
+      // https://stackoverflow.com/a/64128240
+      entities: [__dirname + '/**/*.entity.js'],
       migrations: [],
       subscribers: [],
       poolSize: 10,
       connectorPackage: 'mysql2',
-      extra: {
-        authPlugin: 'sha256_password',
-      },
+      // TODO: 以下配置报 warning：
+      // Ignoring invalid configuration option passed to Connection: authPlugin.This is currently a warning, but in future versions of MySQL2, an error will be thrown if you pass an invalid configuration option to a Connection
+      // extra: {
+      //   authPlugin: 'sha256_password',
+      // },
     }),
     TagsModule,
   ],
