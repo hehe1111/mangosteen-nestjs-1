@@ -15,7 +15,8 @@ export class TagsService {
   }
 
   findAll() {
-    return this.tagRepository.find({ withDeleted: true })
+    // return this.tagRepository.find({ withDeleted: true })
+    return this.tagRepository.find()
   }
 
   findOne(id: number) {
