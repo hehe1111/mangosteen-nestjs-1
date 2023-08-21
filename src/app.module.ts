@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
+import { SessionModule } from './session/session.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UsersModule } from './users/users.module';
     }),
     TagsModule,
     UsersModule,
+    SessionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
