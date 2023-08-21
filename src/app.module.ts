@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
 import { SessionModule } from './session/session.module';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { SessionModule } from './session/session.module';
     TagsModule,
     UsersModule,
     SessionModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],
