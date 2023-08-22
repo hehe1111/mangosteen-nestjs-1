@@ -1,7 +1,9 @@
-import { IsNotEmpty, IsString, Length, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, Length, IsEnum, IsNumber, IsOptional } from 'class-validator';
 import KindEnum from '../enum/kind.enum';
 
 export class CreateTagDto {
+  @IsOptional()
+  @IsNumber()
   @IsNotEmpty({ message: '用户 ID 不能为空' })
   userId: number;
 

@@ -6,19 +6,19 @@ import {
   Patch,
   Param,
   Delete,
-  ValidationPipe,
 } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { UserId } from 'src/user-id/user-id.decorator';
 
 @Controller('tags')
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
   @Post()
-  create(@Body() createTagDto: CreateTagDto) {
-    return this.tagsService.create(createTagDto);
+  create(@UserId() userId: number, @Body() createTagDto: CreateTagDto) {
+    return this.tagsService.create(Object.assign({ userId }, createTagDto || {}) as CreateTagDto);
   }
 
   @Get()
