@@ -43,7 +43,7 @@ import { ValidationCodesModule } from './validation-codes/validation-codes.modul
           // extra: {
           //   authPlugin: 'sha256_password',
           // },
-        }
+        };
       },
     }),
 
@@ -54,9 +54,9 @@ import { ValidationCodesModule } from './validation-codes/validation-codes.modul
         return {
           secret: configService.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: '2h' // 30m 默认 30 分钟
-          }
-        }
+            expiresIn: '30m', // 30m 默认 30 分钟
+          },
+        };
       },
     }),
 
