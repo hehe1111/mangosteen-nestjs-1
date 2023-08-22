@@ -15,4 +15,8 @@ export class UsersService {
     }
     return await this.userEntity.findOneBy({ email });
   }
+
+  async findOneById(id: number) {
+    return await this.userEntity.findOneBy({ id })
+  }
 }

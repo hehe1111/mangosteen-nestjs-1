@@ -1,4 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
-export class MeService {}
+export class MeService {
+  @Inject(UsersService)
+  private userService: UsersService;
+
+  async getUserInfo(userId: number) {
+    return await this.userService.findOneById(userId)
+  }
+}
