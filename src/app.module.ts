@@ -9,6 +9,7 @@ import { RedisModule } from './redis/redis.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
 import { JwtModule } from '@nestjs/jwt';
+import { ValidationCodesModule } from './validation-codes/validation-codes.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { JwtModule } from '@nestjs/jwt';
 
     EmailModule,
 
+    ValidationCodesModule,
     UsersModule,
     SessionModule,
     TagsModule,
