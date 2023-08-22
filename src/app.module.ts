@@ -8,6 +8,7 @@ import { SessionModule } from './session/session.module';
 import { RedisModule } from './redis/redis.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -43,12 +44,25 @@ import { EmailModule } from './email/email.module';
           // },
         }
       },
+    }),
 
+    JwtModule.registerAsync({
+      global: true,
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return {
+          secret: configService.get<string>('JWT_SECRET'),
+          signOptions: {
+            expiresIn: '2h' // 30m 默认 30 分钟
+          }
+        }
+      },
     }),
 
     RedisModule,
 
     EmailModule,
+
     UsersModule,
     SessionModule,
     TagsModule,
