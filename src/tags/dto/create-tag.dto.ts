@@ -1,5 +1,12 @@
-import { IsNotEmpty, IsString, Length, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import KindEnum from '../enum/kind.enum';
+import {
+  IsNotEmpty,
+  IsString,
+  Length,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
+import KindEnum from 'src/enum/kind.enum';
 
 export class CreateTagDto {
   @IsOptional()

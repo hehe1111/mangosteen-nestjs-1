@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from 'typeorm';
-import KindEnum from '../enum/kind.enum';
+import KindEnum from 'src/enum/kind.enum';
 
 @Entity('tags')
 export class TagEntity {
