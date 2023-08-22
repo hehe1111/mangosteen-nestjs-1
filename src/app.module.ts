@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { SessionModule } from './session/session.module';
 import { RedisModule } from './redis/redis.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -44,10 +45,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       },
 
     }),
-    TagsModule,
+
+    RedisModule,
+
+    EmailModule,
     UsersModule,
     SessionModule,
-    RedisModule,
+    TagsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
