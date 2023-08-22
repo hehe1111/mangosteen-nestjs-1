@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ValidationCodesModule } from './validation-codes/validation-codes.module';
+import { MeModule } from './me/me.module';
 
 @Module({
   imports: [
@@ -68,6 +69,7 @@ import { ValidationCodesModule } from './validation-codes/validation-codes.modul
     UsersModule,
     SessionModule,
     TagsModule,
+    MeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
