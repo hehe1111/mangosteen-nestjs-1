@@ -13,6 +13,7 @@ import { ValidationCodesModule } from './validation-codes/validation-codes.modul
 import { MeModule } from './me/me.module';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuardGuard } from './login-guard/login-guard.guard';
+import { ItemsModule } from './items/items.module';
 
 @Module({
   imports: [
@@ -72,6 +73,7 @@ import { LoginGuardGuard } from './login-guard/login-guard.guard';
     SessionModule,
     TagsModule,
     MeModule,
+    ItemsModule,
   ],
   controllers: [AppController],
   providers: [
