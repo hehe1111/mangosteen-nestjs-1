@@ -11,6 +11,8 @@ import { EmailModule } from './email/email.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ValidationCodesModule } from './validation-codes/validation-codes.module';
 import { MeModule } from './me/me.module';
+import { APP_GUARD } from '@nestjs/core';
+import { LoginGuardGuard } from './login-guard/login-guard.guard';
 
 @Module({
   imports: [
@@ -72,6 +74,12 @@ import { MeModule } from './me/me.module';
     MeModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: LoginGuardGuard,
+    },
+    AppService
+  ],
 })
 export class AppModule {}
