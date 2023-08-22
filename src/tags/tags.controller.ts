@@ -17,7 +17,7 @@ export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
   @Post()
-  create(@Body(ValidationPipe) createTagDto: CreateTagDto) {
+  create(@Body() createTagDto: CreateTagDto) {
     return this.tagsService.create(createTagDto);
   }
 
@@ -32,10 +32,7 @@ export class TagsController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body(ValidationPipe) updateTagDto: UpdateTagDto,
-  ) {
+  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagsService.update(+id, updateTagDto);
   }
 
