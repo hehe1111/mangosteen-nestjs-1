@@ -3,7 +3,7 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from './entities/tag.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm'
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TagsService {
@@ -16,36 +16,36 @@ export class TagsService {
 
   findAll() {
     // return this.tagRepository.find({ withDeleted: true })
-    return this.tagRepository.find()
+    return this.tagRepository.find();
   }
 
   findOne(id: number) {
-    return this.tagRepository.findOneBy({ id })
+    return this.tagRepository.findOneBy({ id });
   }
 
   async update(id: number, updateTagDto: UpdateTagDto) {
     // exist 会自动过滤 deletedAt 非空的数据
-    const existed = await this.tagRepository.exist({ where: { id } })
+    const existed = await this.tagRepository.exist({ where: { id } });
     if (!existed) {
-      throw new HttpException('不能更新不存在的数据', 400)
+      throw new HttpException('不能更新不存在的数据', 400);
     }
 
-    await this.tagRepository.save({ id, ...updateTagDto })
+    await this.tagRepository.save({ id, ...updateTagDto });
     // ! save 只返回了有变动的部分字段，故需要重新查找
-    return this.tagRepository.findOneBy({ id })
+    return this.tagRepository.findOneBy({ id });
   }
 
   async remove(id: number) {
-    const record = await this.tagRepository.findOneBy({ id })
+    const record = await this.tagRepository.findOneBy({ id });
 
     if (!record) {
-      throw new HttpException('不能删除不存在的数据', 400)
+      throw new HttpException('不能删除不存在的数据', 400);
     }
 
     if (record.deletedAt) {
-      throw new HttpException('重复删除', 400)
+      throw new HttpException('重复删除', 400);
     }
 
-    return this.tagRepository.softDelete(id)
+    return this.tagRepository.softDelete(id);
   }
 }

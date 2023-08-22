@@ -7,11 +7,11 @@ export class RedisService {
   private redisClient: RedisClientType;
 
   async get(key: string) {
-    return await this.redisClient.get(key)
+    return await this.redisClient.get(key);
   }
-  
+
   async set(key: string, value: string | number, ttl?: number) {
-    await this.redisClient.set(key, value)
-    ttl && await this.redisClient.expire(key, ttl)
+    await this.redisClient.set(key, value);
+    ttl && (await this.redisClient.expire(key, ttl));
   }
 }

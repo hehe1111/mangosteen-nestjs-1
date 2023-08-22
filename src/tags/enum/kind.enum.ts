@@ -3,4 +3,4 @@ enum KindEnum {
   Income = 2,
 }
 
-export default KindEnum
+export default KindEnum;
