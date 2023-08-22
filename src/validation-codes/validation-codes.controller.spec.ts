@@ -9,7 +9,9 @@ describe('ValidationCodesController', () => {
       controllers: [ValidationCodesController],
     }).compile();
 
-    controller = module.get<ValidationCodesController>(ValidationCodesController);
+    controller = module.get<ValidationCodesController>(
+      ValidationCodesController,
+    );
   });
 
   it('should be defined', () => {
