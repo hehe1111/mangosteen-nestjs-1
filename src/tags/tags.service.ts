@@ -14,12 +14,15 @@ export class TagsService {
     return this.tagRepository.save(createTagDto);
   }
 
-  findAll() {
-    // return this.tagRepository.find({ withDeleted: true })
-    return this.tagRepository.find();
+  async findAll() {
+    // return this.tagRepository.findAndCount({ withDeleted: true })
+    // findAndCount 会自动过滤 deletedAt 非空的数据
+    const [list, total] = await this.tagRepository.findAndCount();
+    return { resources: list, total }
   }
 
   findOne(id: number) {
+    // findOneBy 会自动过滤 deletedAt 非空的数据
     return this.tagRepository.findOneBy({ id });
   }
 
