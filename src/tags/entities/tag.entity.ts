@@ -5,22 +5,25 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
 } from 'typeorm';
 import KindEnum from 'src/enum/kind.enum';
+import { ItemEntity } from 'src/items/entities/item.entity';
 
 @Entity('tags')
 export class TagEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // TODO:
-  // @ManyToOne(() => User)
   @Column({
     name: 'user_id',
     type: 'bigint',
     comment: '用户 ID',
   })
   userId: number;
+
+  @OneToMany(() => ItemEntity, item => item.tag)
+  items: ItemEntity[]
 
   @Column({
     length: 8,
