@@ -22,25 +22,35 @@ export class ItemsService {
   async findAll() {
     // return this.itemRepository.findAndCount({ withDeleted: true })
     // findAndCount 会自动过滤 deletedAt 非空的数据
-    const [list, total] = await this.itemRepository.findAndCount();
-    return { resources: list, total }
+    const [list, total] = await this.itemRepository.findAndCount({
+      relations: { tag: true },
+    });
+    return { resources: list, total };
   }
 
   findOne(id: number) {
-    // findOneBy 会自动过滤 deletedAt 非空的数据
-    return this.itemRepository.findOneBy({ id });
+    // findOneBy/findOne 会自动过滤 deletedAt 非空的数据
+    // findOneBy 不能做关联查询，故改为 findOne
+    return this.itemRepository.findOne({
+      where: { id },
+      relations: { tag: true },
+    });
   }
 
   async update(id: number, updateItemDto: UpdateItemDto) {
     // exist 会自动过滤 deletedAt 非空的数据
-    const existed = await this.itemRepository.exist({ where: { id } })
+    const existed = await this.itemRepository.exist({ where: { id } });
     if (!existed) {
-      throw new BadRequestException('不能更新不存在的数据')
+      throw new BadRequestException('不能更新不存在的数据');
     }
 
-    await this.itemRepository.save({ id, ...updateItemDto })
+    await this.itemRepository.save({ id, ...updateItemDto });
     // ! save 只返回了有变动的部分字段，故需要重新查找
-    return this.itemRepository.findOneBy({ id })
+    // findOneBy 不能做关联查询，故改为 findOne
+    return this.itemRepository.findOne({
+      where: { id },
+      relations: { tag: true },
+    });
   }
 
   async remove(id: number) {
@@ -48,9 +58,9 @@ export class ItemsService {
     const record = await this.itemRepository.findOneBy({ id });
 
     if (!record) {
-      throw new BadRequestException('不能删除不存在的数据')
+      throw new BadRequestException('不能删除不存在的数据');
     }
 
-    return this.itemRepository.softDelete(id)
+    return this.itemRepository.softDelete(id);
   }
 }

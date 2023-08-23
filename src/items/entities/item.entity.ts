@@ -3,10 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import KindEnum from 'src/enum/kind.enum';
+import { TagEntity } from 'src/tags/entities/tag.entity';
 
 @Entity('items')
 export class ItemEntity {
@@ -20,12 +23,9 @@ export class ItemEntity {
   })
   userId: number;
 
-  @Column({
-    name: 'tag_id',
-    type: 'bigint',
-    comment: '标签 ID',
-  })
-  tagId: number;
+  @JoinColumn()
+  @ManyToOne(() => TagEntity, { cascade: true })
+  tag: TagEntity;
 
   @Column({
     comment: '金额（单位：分）',
