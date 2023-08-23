@@ -47,6 +47,15 @@ export class AppController {
     await this.entityManager.save(TagEntity, tag2)
     await this.entityManager.save(TagEntity, tag3)
 
+    for (let i = 0; i < 20; i++) {
+      const tag4 = new TagEntity()
+      tag4.kind = 1
+      tag4.name = '运动' + i
+      tag4.sign = '🏃‍'
+      tag4.userId = user.id
+      await this.entityManager.save(TagEntity, tag4)
+    }
+
     const item = new ItemEntity()
     item.amount = 1000
     item.happenedAt = new Date('2023-08-23T19:21:54+0800')
@@ -74,5 +83,16 @@ export class AppController {
     await this.entityManager.save(ItemEntity, item)
     await this.entityManager.save(ItemEntity, item2)
     await this.entityManager.save(ItemEntity, item3)
+
+    for (let i = 4; i < 24; i++) {
+      const item4 = new ItemEntity()
+      item4.amount = 3000
+      item4.happenedAt = new Date('2023-08-23T21:21:54+0800')
+      item4.kind = 1
+      item4.note = `第${i}笔支出`
+      item4.tag = tag3
+      item4.userId = user.id
+      await this.entityManager.save(ItemEntity, item4)
+    }
   }
 }

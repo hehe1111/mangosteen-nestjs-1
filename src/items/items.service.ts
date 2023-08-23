@@ -1,6 +1,5 @@
-// TODO: 分页：tags items
 // TODO: 统计接口
-// TODO: 按 kind 时间范围 用户id 查询
+// TODO: 按 时间范围 查询
 // TODO: 格式化响应 resource / resources
 
 import { BadRequestException, Injectable } from '@nestjs/common';
@@ -9,6 +8,14 @@ import { UpdateItemDto } from './dto/update-item.dto';
 import { ItemEntity } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import KindEnum from 'src/enum/kind.enum';
+
+interface IFindAllPayload {
+  userId: number;
+  page: number;
+  pageSize: number;
+  kind?: KindEnum;
+}
 
 @Injectable()
 export class ItemsService {
@@ -19,11 +26,16 @@ export class ItemsService {
     return this.itemRepository.save(createItemDto);
   }
 
-  async findAll() {
-    const [list, total] = await this.itemRepository.findAndCount({
+  async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
+    const where = { userId, ...(kind ? { kind } : {}) };
+    const list = await this.itemRepository.find({
+      where,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       relations: { tag: true },
     });
-    return { resources: list, total };
+    const count = await this.itemRepository.count({ where });
+    return { resources: list, count, page, pageSize };
   }
 
   findOne(id: number) {

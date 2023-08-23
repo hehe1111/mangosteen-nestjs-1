@@ -5,6 +5,14 @@ import { TagEntity } from './entities/tag.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ItemsService } from 'src/items/items.service';
+import KindEnum from 'src/enum/kind.enum';
+
+interface IFindAllPayload {
+  userId: number;
+  page: number;
+  pageSize: number;
+  kind?: KindEnum;
+}
 
 @Injectable()
 export class TagsService {
@@ -18,9 +26,15 @@ export class TagsService {
     return this.tagRepository.save(createTagDto);
   }
 
-  async findAll() {
-    const [list, total] = await this.tagRepository.findAndCount();
-    return { resources: list, total };
+  async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
+    const where = { userId, ...(kind ? { kind } : {}) };
+    const list = await this.tagRepository.find({
+      where,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+    const count = await this.tagRepository.count({ where });
+    return { resources: list, count, page, pageSize };
   }
 
   findOne(id: number) {

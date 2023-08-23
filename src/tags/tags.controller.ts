@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  DefaultValuePipe,
+  Query,
 } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { UserId } from 'src/user-id/user-id.decorator';
+import KindEnum from 'src/enum/kind.enum';
 
 @Controller('tags')
 export class TagsController {
@@ -18,12 +21,25 @@ export class TagsController {
 
   @Post()
   create(@UserId() userId: number, @Body() createTagDto: CreateTagDto) {
-    return this.tagsService.create(Object.assign({ userId }, createTagDto || {}) as CreateTagDto);
+    return this.tagsService.create({
+      userId,
+      ...(createTagDto || {}),
+    } as CreateTagDto);
   }
 
   @Get()
-  findAll() {
-    return this.tagsService.findAll();
+  findAll(
+    @UserId() userId: number,
+    @Query('page', new DefaultValuePipe(1)) page: number,
+    @Query('pageSize', new DefaultValuePipe(10)) pageSize: number,
+    @Query('kind') kind?: KindEnum,
+  ) {
+    return this.tagsService.findAll({
+      userId,
+      page: +page,
+      pageSize: +pageSize,
+      kind,
+    });
   }
 
   @Get(':id')
