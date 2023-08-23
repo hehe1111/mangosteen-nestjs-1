@@ -51,7 +51,6 @@ export class ItemEntity {
   kind: KindEnum;
 
   @DeleteDateColumn({
-    type: 'datetime',
     nullable: true,
     comment: '标签删除时间',
   })
