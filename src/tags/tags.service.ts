@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { TagEntity } from './entities/tag.entity';
@@ -27,7 +27,7 @@ export class TagsService {
     // exist 会自动过滤 deletedAt 非空的数据
     const existed = await this.tagRepository.exist({ where: { id } });
     if (!existed) {
-      throw new HttpException('不能更新不存在的数据', 400);
+      throw new BadRequestException('不能更新不存在的数据');
     }
 
     await this.tagRepository.save({ id, ...updateTagDto });
@@ -36,14 +36,11 @@ export class TagsService {
   }
 
   async remove(id: number) {
+    // findOneBy 会自动过滤 deletedAt 非空的数据，因此不需要处理重复删除
     const record = await this.tagRepository.findOneBy({ id });
 
     if (!record) {
-      throw new HttpException('不能删除不存在的数据', 400);
-    }
-
-    if (record.deletedAt) {
-      throw new HttpException('重复删除', 400);
+      throw new BadRequestException('不能删除不存在的数据');
     }
 
     return this.tagRepository.softDelete(id);
