@@ -16,6 +16,7 @@ export class TagEntity {
   // TODO:
   // @ManyToOne(() => User)
   @Column({
+    name: 'user_id',
     type: 'bigint',
     comment: '用户 ID',
   })
@@ -41,17 +42,20 @@ export class TagEntity {
   kind: KindEnum;
 
   @DeleteDateColumn({
+    name: 'deleted_at',
     nullable: true,
     comment: '标签删除时间',
   })
   deletedAt: Date;
 
   @CreateDateColumn({
+    name: 'created_at',
     comment: '标签创建时间',
   })
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'updated_at',
     comment: '标签更新时间',
   })
   updatedAt: Date;
