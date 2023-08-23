@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+// TODO: 分页：tags items
+// TODO: 统计接口
+// TODO: 按 kind 时间范围 用户id 查询
+// TODO: 格式化响应 resource / resources
+
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { ItemEntity } from './entities/item.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ItemsService {
-  create(createItemDto: CreateItemDto) {
-    return 'This action adds a new item';
+  @InjectRepository(ItemEntity)
+  private itemRepository: Repository<ItemEntity>;
+
+  async create(createItemDto: CreateItemDto) {
+    return this.itemRepository.save(createItemDto);
   }
 
-  findAll() {
-    return `This action returns all items`;
+  async findAll() {
+    // return this.itemRepository.findAndCount({ withDeleted: true })
+    // findAndCount 会自动过滤 deletedAt 非空的数据
+    const [list, total] = await this.itemRepository.findAndCount();
+    return { resources: list, total }
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} item`;
+    // findOneBy 会自动过滤 deletedAt 非空的数据
+    return this.itemRepository.findOneBy({ id });
   }
 
-  update(id: number, updateItemDto: UpdateItemDto) {
-    return `This action updates a #${id} item`;
+  async update(id: number, updateItemDto: UpdateItemDto) {
+    // exist 会自动过滤 deletedAt 非空的数据
+    const existed = await this.itemRepository.exist({ where: { id } })
+    if (!existed) {
+      throw new BadRequestException('不能更新不存在的数据')
+    }
+
+    await this.itemRepository.save({ id, ...updateItemDto })
+    // ! save 只返回了有变动的部分字段，故需要重新查找
+    return this.itemRepository.findOneBy({ id })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} item`;
+  async remove(id: number) {
+    // findOneBy 会自动过滤 deletedAt 非空的数据，因此不存在重复删除
+    const record = await this.itemRepository.findOneBy({ id });
+
+    if (!record) {
+      throw new BadRequestException('不能删除不存在的数据')
+    }
+
+    return this.itemRepository.softDelete(id)
   }
 }
