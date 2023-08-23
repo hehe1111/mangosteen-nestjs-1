@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, Inject, UnauthorizedExceptio
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
-const WHITE_LIST = ['', '/validation_codes', '/session']
+const WHITE_LIST = ['', '/validation_codes', '/session', '/init-data']
 
 @Injectable()
 export class LoginGuardGuard implements CanActivate {
