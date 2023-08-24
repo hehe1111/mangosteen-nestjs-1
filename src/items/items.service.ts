@@ -86,13 +86,15 @@ export class ItemsService {
     happenedAfter,
     happenedBefore,
   }: IItems) {
-    const query = this.itemRepository.commonQuery({
-      userId,
-      kind,
-      happenedAfter,
-      happenedBefore,
-    });
-    const list = await query.leftJoinAndSelect('item.tag', 't').getMany();
+    const list = await this.itemRepository
+      .commonQuery({
+        userId,
+        kind,
+        happenedAfter,
+        happenedBefore,
+      })
+      .leftJoinAndSelect('item.tag', 't') // 获取关联标签
+      .getMany();
     const hash: Record<string, number> = {};
     // 结果列表
     let resources = [];
