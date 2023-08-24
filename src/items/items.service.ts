@@ -2,13 +2,11 @@
 // TODO: 按 时间范围 查询
 // TODO: 格式化响应 resource / resources
 
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import { ItemEntity } from './entities/item.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import KindEnum from 'src/enum/kind.enum';
+import { ItemRepository } from './items.repository';
 
 interface IFindAllPayload {
   userId: number;
@@ -19,50 +17,49 @@ interface IFindAllPayload {
 
 @Injectable()
 export class ItemsService {
-  @InjectRepository(ItemEntity)
-  private itemRepository: Repository<ItemEntity>;
+  @Inject(ItemRepository)
+  private itemRepository: ItemRepository;
 
   async create(createItemDto: CreateItemDto) {
     return this.itemRepository.save(createItemDto);
   }
 
   async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
-    const where = { userId, ...(kind ? { kind } : {}) };
-    const list = await this.itemRepository.find({
-      where,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      relations: { tag: true },
-    });
-    const count = await this.itemRepository.count({ where });
+    const query = this.itemRepository.commonQuery(userId, kind);
+    const list = await query
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .leftJoinAndSelect('item.tag', 't') // 获取关联标签
+      .getMany(); // 注意调用这一行
+    const count = await query.getCount();
     return { resources: list, count, page, pageSize };
   }
 
-  findOne(id: number) {
-    return this.itemRepository.findOne({
-      where: { id },
-      relations: { tag: true },
-    });
+  findOne(userId: number, id: number) {
+    return this.itemRepository
+      .commonQueryById(userId, id)
+      .leftJoinAndSelect('item.tag', 't')
+      .getOne();
   }
 
-  async update(id: number, updateItemDto: UpdateItemDto) {
-    const existed = await this.itemRepository.exist({ where: { id } });
+  async update(userId: number, id: number, updateItemDto: UpdateItemDto) {
+    const query = this.itemRepository.commonQueryById(userId, id);
+    const existed = await query.getExists();
     if (!existed) {
       throw new BadRequestException('不能更新不存在的数据');
     }
 
     await this.itemRepository.save({ id, ...updateItemDto });
     // ! save 只返回了有变动的部分字段，故需要重新查找
-    return this.itemRepository.findOne({
-      where: { id },
-      relations: { tag: true },
-    });
+    return query.leftJoinAndSelect('item.tag', 't').getOne();
   }
 
-  async remove(id: number) {
-    const record = await this.itemRepository.findOneBy({ id });
+  async remove(userId: number, id: number) {
+    const existed = await this.itemRepository
+      .commonQueryById(userId, id)
+      .getExists();
 
-    if (!record) {
+    if (!existed) {
       throw new BadRequestException('不能删除不存在的数据');
     }
 

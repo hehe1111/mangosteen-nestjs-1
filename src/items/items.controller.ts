@@ -43,17 +43,17 @@ export class ItemsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.itemsService.findOne(+id);
+  findOne(@UserId() userId: number, @Param('id') id: string) {
+    return this.itemsService.findOne(userId, +id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
-    return this.itemsService.update(+id, updateItemDto);
+  update(@UserId() userId: number, @Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+    return this.itemsService.update(userId, +id, updateItemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.itemsService.remove(+id);
+  remove(@UserId() userId: number, @Param('id') id: string) {
+    return this.itemsService.remove(userId, +id);
   }
 }

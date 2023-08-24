@@ -43,17 +43,17 @@ export class TagsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tagsService.findOne(+id);
+  findOne(@UserId() userId: number, @Param('id') id: string) {
+    return this.tagsService.findOne(userId, +id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
-    return this.tagsService.update(+id, updateTagDto);
+  update(@UserId() userId: number, @Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
+    return this.tagsService.update(userId, +id, updateTagDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tagsService.remove(+id);
+  remove(@UserId() userId: number, @Param('id') id: string) {
+    return this.tagsService.remove(userId, +id);
   }
 }

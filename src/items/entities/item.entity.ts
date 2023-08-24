@@ -23,7 +23,9 @@ export class ItemEntity {
   })
   userId: number;
 
-  @JoinColumn()
+  @JoinColumn({
+    name: 'tag_id'
+  })
   @ManyToOne(() => TagEntity, { cascade: true })
   tag: TagEntity;
 

@@ -1,14 +1,14 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDateString, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString } from "class-validator";
 import KindEnum from "src/enum/kind.enum";
+import { TagEntity } from "src/tags/entities/tag.entity";
 
 export class CreateItemDto {
   @IsOptional()
   @IsNumber()
   userId: number
 
-  @IsNotEmpty({ message: '标签 ID 不能为空' })
-  @IsNumber()
-  tagId: number;
+  @IsNotEmptyObject({ nullable: false }, { message: '标签不能为空' })
+  tag: TagEntity;
 
   @IsNotEmpty({ message: '金额不能为空' })
   @IsNumber()

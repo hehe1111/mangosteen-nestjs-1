@@ -1,11 +1,9 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
-import { TagEntity } from './entities/tag.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ItemsService } from 'src/items/items.service';
 import KindEnum from 'src/enum/kind.enum';
+import { TagRepository } from './tags.repository';
 
 interface IFindAllPayload {
   userId: number;
@@ -16,8 +14,8 @@ interface IFindAllPayload {
 
 @Injectable()
 export class TagsService {
-  @InjectRepository(TagEntity)
-  private tagRepository: Repository<TagEntity>;
+  @Inject(TagRepository)
+  private tagRepository: TagRepository;
 
   @Inject(ItemsService)
   private itemService: ItemsService;
@@ -27,43 +25,43 @@ export class TagsService {
   }
 
   async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
-    const where = { userId, ...(kind ? { kind } : {}) };
-    const list = await this.tagRepository.find({
-      where,
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-    });
-    const count = await this.tagRepository.count({ where });
+    const query = this.tagRepository.commonQuery(userId, kind);
+    const list = await query
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getMany();
+    const count = await query.getCount();
     return { resources: list, count, page, pageSize };
   }
 
-  findOne(id: number) {
-    return this.tagRepository.findOneBy({ id });
+  findOne(userId: number, id: number) {
+    return this.tagRepository.commonQueryById(userId, id).getOne();
   }
 
-  async update(id: number, updateTagDto: UpdateTagDto) {
-    const existed = await this.tagRepository.exist({ where: { id } });
+  async update(userId: number, id: number, updateTagDto: UpdateTagDto) {
+    const query = this.tagRepository.commonQueryById(userId, id);
+    const existed = await query.getExists();
     if (!existed) {
       throw new BadRequestException('不能更新不存在的数据');
     }
 
     await this.tagRepository.save({ id, ...updateTagDto });
     // ! save 只返回了有变动的部分字段，故需要重新查找
-    return this.tagRepository.findOneBy({ id });
+    return query.getOne();
   }
 
-  async remove(id: number) {
-    const record = await this.tagRepository.findOne({
-      where: { id },
-      relations: { items: true },
-    });
+  async remove(userId: number, id: number) {
+    const record = await this.tagRepository
+      .commonQueryById(userId, id)
+      .leftJoinAndSelect('tag.items', 'i')
+      .getOne();
 
     if (!record) {
       throw new BadRequestException('不能删除不存在的数据');
     }
 
     // 删除标签关联的收支记录
-    record.items.forEach((i) => this.itemService.remove(i.id));
+    record.items.forEach(async (i) => await this.itemService.remove(userId, i.id));
 
     return this.tagRepository.softDelete(id);
   }
