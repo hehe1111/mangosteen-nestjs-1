@@ -1,6 +1,5 @@
 // TODO: 统计接口
 // TODO: 按 时间范围 查询
-// TODO: 格式化响应 resource / resources
 
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -21,25 +20,27 @@ export class ItemsService {
   private itemRepository: ItemRepository;
 
   async create(createItemDto: CreateItemDto) {
-    return this.itemRepository.save(createItemDto);
+    const resource = await this.itemRepository.save(createItemDto);
+    return { resource };
   }
 
   async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
     const query = this.itemRepository.commonQuery(userId, kind);
-    const list = await query
+    const resources = await query
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .leftJoinAndSelect('item.tag', 't') // 获取关联标签
       .getMany(); // 注意调用这一行
     const count = await query.getCount();
-    return { resources: list, count, page, pageSize };
+    return { resources, count, page, pageSize };
   }
 
-  findOne(userId: number, id: number) {
-    return this.itemRepository
+  async findOne(userId: number, id: number) {
+    const resource = await this.itemRepository
       .commonQueryById(userId, id)
       .leftJoinAndSelect('item.tag', 't')
       .getOne();
+    return { resource };
   }
 
   async update(userId: number, id: number, updateItemDto: UpdateItemDto) {
@@ -51,7 +52,8 @@ export class ItemsService {
 
     await this.itemRepository.save({ id, ...updateItemDto });
     // ! save 只返回了有变动的部分字段，故需要重新查找
-    return query.leftJoinAndSelect('item.tag', 't').getOne();
+    const resource = await query.leftJoinAndSelect('item.tag', 't').getOne();
+    return { resource };
   }
 
   async remove(userId: number, id: number) {

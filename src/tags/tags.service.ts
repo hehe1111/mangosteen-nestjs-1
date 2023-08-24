@@ -20,22 +20,26 @@ export class TagsService {
   @Inject(ItemsService)
   private itemService: ItemsService;
 
-  create(createTagDto: CreateTagDto) {
-    return this.tagRepository.save(createTagDto);
+  async create(createTagDto: CreateTagDto) {
+    const resource = await this.tagRepository.save(createTagDto);
+    return { resource };
   }
 
   async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
     const query = this.tagRepository.commonQuery(userId, kind);
-    const list = await query
+    const resources = await query
       .skip((page - 1) * pageSize)
       .take(pageSize)
       .getMany();
     const count = await query.getCount();
-    return { resources: list, count, page, pageSize };
+    return { resources, count, page, pageSize };
   }
 
-  findOne(userId: number, id: number) {
-    return this.tagRepository.commonQueryById(userId, id).getOne();
+  async findOne(userId: number, id: number) {
+    const resource = await this.tagRepository
+      .commonQueryById(userId, id)
+      .getOne();
+    return { resource };
   }
 
   async update(userId: number, id: number, updateTagDto: UpdateTagDto) {
@@ -47,7 +51,8 @@ export class TagsService {
 
     await this.tagRepository.save({ id, ...updateTagDto });
     // ! save 只返回了有变动的部分字段，故需要重新查找
-    return query.getOne();
+    const resource = await query.getOne();
+    return { resource };
   }
 
   async remove(userId: number, id: number) {
@@ -61,7 +66,9 @@ export class TagsService {
     }
 
     // 删除标签关联的收支记录
-    record.items.forEach(async (i) => await this.itemService.remove(userId, i.id));
+    record.items.forEach(
+      async (i) => await this.itemService.remove(userId, i.id),
+    );
 
     return this.tagRepository.softDelete(id);
   }
