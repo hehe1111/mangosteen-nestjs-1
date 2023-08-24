@@ -4,6 +4,13 @@ import { ItemEntity } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import KindEnum from 'src/enum/kind.enum';
 
+interface ICommonQuery {
+  userId: number;
+  kind?: KindEnum;
+  happenedAfter?: Date;
+  happenedBefore?: Date;
+}
+
 // https://stackoverflow.com/a/73239250
 // https://orkhan.gitbook.io/typeorm/docs/custom-repository#how-to-create-custom-repository
 // https://devpress.csdn.net/mongodb/62fc856f7e6682346618fef8.html
@@ -23,11 +30,18 @@ export class ItemRepository extends Repository<ItemEntity> {
     );
   }
 
-  commonQuery(userId: number, kind?: KindEnum) {
+  commonQuery({ userId, kind, happenedAfter, happenedBefore }: ICommonQuery) {
     let builder = this.itemRepository
       .createQueryBuilder('item') // 参数是「别名」，方便写后续链式调用里的 sql 语句
+      .orderBy('item.happenedAt', 'DESC')
       .where('item.userId = :userId', { userId });
     kind && (builder = builder.andWhere('item.kind = :kind', { kind }));
+    if (happenedAfter || happenedBefore) {
+      builder = builder.andWhere(
+        'item.happenedAt BETWEEN :happenedAfter AND :happenedBefore',
+        { happenedAfter, happenedBefore },
+      );
+    }
     return builder;
   }
 

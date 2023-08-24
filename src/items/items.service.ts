@@ -1,5 +1,4 @@
 // TODO: 统计接口
-// TODO: 按 时间范围 查询
 
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -12,6 +11,8 @@ interface IFindAllPayload {
   page: number;
   pageSize: number;
   kind?: KindEnum;
+  happenedAfter?: Date;
+  happenedBefore?: Date;
 }
 
 @Injectable()
@@ -24,8 +25,20 @@ export class ItemsService {
     return { resource };
   }
 
-  async findAll({ userId, page, pageSize, kind }: IFindAllPayload) {
-    const query = this.itemRepository.commonQuery(userId, kind);
+  async findAll({
+    userId,
+    page,
+    pageSize,
+    kind,
+    happenedAfter,
+    happenedBefore,
+  }: IFindAllPayload) {
+    const query = this.itemRepository.commonQuery({
+      userId,
+      kind,
+      happenedAfter,
+      happenedBefore,
+    });
     const resources = await query
       .skip((page - 1) * pageSize)
       .take(pageSize)

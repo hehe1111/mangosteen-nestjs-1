@@ -33,12 +33,16 @@ export class ItemsController {
     @Query('page', new DefaultValuePipe(1)) page: number,
     @Query('pageSize', new DefaultValuePipe(10)) pageSize: number,
     @Query('kind') kind?: KindEnum,
+    @Query('happenedAfter') happenedAfter?: Date,
+    @Query('happenedBefore') happenedBefore?: Date,
   ) {
     return this.itemsService.findAll({
       userId,
       page: +page,
       pageSize: +pageSize,
-      kind,
+      kind: +kind,
+      happenedAfter,
+      happenedBefore,
     });
   }
 
