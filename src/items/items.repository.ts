@@ -36,11 +36,15 @@ export class ItemRepository extends Repository<ItemEntity> {
       .orderBy('item.happenedAt', 'DESC')
       .where('item.userId = :userId', { userId });
     kind && (builder = builder.andWhere('item.kind = :kind', { kind }));
-    if (happenedAfter || happenedBefore) {
+    if (happenedAfter && happenedBefore) {
       builder = builder.andWhere(
         'item.happenedAt BETWEEN :happenedAfter AND :happenedBefore',
         { happenedAfter, happenedBefore },
       );
+    } else if (happenedAfter) {
+      builder = builder.andWhere('item.happenedAt > :happenedAfter', { happenedAfter })
+    } else if (happenedBefore) {
+      builder = builder.andWhere('item.happenedAt < :happenedBefore', { happenedBefore })
     }
     return builder;
   }
