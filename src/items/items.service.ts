@@ -3,16 +3,14 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import KindEnum from 'src/enum/kind.enum';
-import { ItemRepository } from './items.repository';
+import { ICommonQuery, ItemRepository } from './items.repository';
+import GroupByEnum from 'src/enum/group-by.enum';
+import { TagEntity } from 'src/tags/entities/tag.entity';
 
-interface IFindAllPayload {
-  userId: number;
-  page: number;
-  pageSize: number;
-  kind?: KindEnum;
-  happenedAfter?: Date;
-  happenedBefore?: Date;
+interface IItems extends ICommonQuery {
+  page?: number;
+  pageSize?: number;
+  groupBy?: GroupByEnum;
 }
 
 @Injectable()
@@ -32,7 +30,7 @@ export class ItemsService {
     kind,
     happenedAfter,
     happenedBefore,
-  }: IFindAllPayload) {
+  }: IItems) {
     const query = this.itemRepository.commonQuery({
       userId,
       kind,
@@ -79,5 +77,54 @@ export class ItemsService {
     }
 
     return this.itemRepository.softDelete(id);
+  }
+
+  async summary({
+    userId,
+    groupBy,
+    kind,
+    happenedAfter,
+    happenedBefore,
+  }: IItems) {
+    const query = this.itemRepository.commonQuery({
+      userId,
+      kind,
+      happenedAfter,
+      happenedBefore,
+    });
+    const list = await query.leftJoinAndSelect('item.tag', 't').getMany();
+    const hash: Record<string, number> = {};
+    // 结果列表
+    let resources = [];
+    // 总金额
+    let total = 0;
+    if (groupBy === GroupByEnum.HappenedAt) {
+      list.forEach((i) => {
+        const date = new Date(i.happenedAt).toLocaleDateString();
+        !hash[date] && (hash[date] = 0);
+        hash[date] += i.amount;
+        total += i.amount;
+      });
+      resources = Object.keys(hash).map((key) => ({
+        happened_at: key,
+        amount: hash[key],
+      }));
+    } else if (groupBy === GroupByEnum.TagId) {
+      // 存储「标签ID:标签」键值对，方便后续构造结果数据
+      const idTagHash: Record<string, TagEntity> = {};
+      list.forEach((i) => {
+        const tagId = `${i.tag.id}`;
+        !hash[tagId] && (hash[tagId] = 0);
+        hash[tagId] += i.amount;
+        total += i.amount;
+        // 暂存标签
+        !idTagHash[tagId] && (idTagHash[tagId] = i.tag);
+      });
+      resources = Object.keys(hash).map((key) => ({
+        tag: idTagHash[key],
+        amount: hash[key],
+      }));
+    }
+    return { resources, total };
   }
 }

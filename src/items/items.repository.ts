@@ -4,7 +4,7 @@ import { ItemEntity } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import KindEnum from 'src/enum/kind.enum';
 
-interface ICommonQuery {
+export interface ICommonQuery {
   userId: number;
   kind?: KindEnum;
   happenedAfter?: Date;

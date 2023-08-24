@@ -14,6 +14,7 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { UserId } from 'src/user-id/user-id.decorator';
 import KindEnum from 'src/enum/kind.enum';
+import GroupByEnum from 'src/enum/group-by.enum';
 
 @Controller('items')
 export class ItemsController {
@@ -46,13 +47,36 @@ export class ItemsController {
     });
   }
 
+  // ! 这个接口必须放到 @Get(':id') 前，否则 /summary 会被 @Get(':id') 拦截，就不会命中 @Get('summary')
+  @Get('summary')
+  summary(
+    @UserId() userId: number,
+    @Query('group_by', new DefaultValuePipe(GroupByEnum.HappenedAt))
+    groupBy: GroupByEnum,
+    @Query('kind') kind?: KindEnum,
+    @Query('happenedAfter') happenedAfter?: Date,
+    @Query('happenedBefore') happenedBefore?: Date,
+  ) {
+    return this.itemsService.summary({
+      userId,
+      groupBy,
+      kind: +kind,
+      happenedAfter,
+      happenedBefore,
+    });
+  }
+
   @Get(':id')
   findOne(@UserId() userId: number, @Param('id') id: string) {
     return this.itemsService.findOne(userId, +id);
   }
 
   @Patch(':id')
-  update(@UserId() userId: number, @Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+  update(
+    @UserId() userId: number,
+    @Param('id') id: string,
+    @Body() updateItemDto: UpdateItemDto,
+  ) {
     return this.itemsService.update(userId, +id, updateItemDto);
   }
 
