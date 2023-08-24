@@ -26,6 +26,7 @@ export class TagRepository extends Repository<TagEntity> {
   commonQuery(userId: number, kind?: KindEnum) {
     let builder = this.tagRepository
       .createQueryBuilder('tag') // 参数是「别名」，方便写后续链式调用里的 sql 语句
+      .orderBy('tag.createdAt', 'DESC')
       .where('tag.userId = :userId', { userId });
     kind && (builder = builder.andWhere('tag.kind = :kind', { kind }));
     return builder;

@@ -38,7 +38,7 @@ export class TagsController {
       userId,
       page: +page,
       pageSize: +pageSize,
-      kind,
+      kind: +kind,
     });
   }
 
