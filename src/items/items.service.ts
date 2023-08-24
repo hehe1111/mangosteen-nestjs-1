@@ -1,11 +1,10 @@
-// TODO: 统计接口
-
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { ICommonQuery, ItemRepository } from './items.repository';
 import GroupByEnum from 'src/enum/group-by.enum';
 import { TagEntity } from 'src/tags/entities/tag.entity';
+import KindEnum from 'src/enum/kind.enum';
 
 interface IItems extends ICommonQuery {
   page?: number;
@@ -128,5 +127,25 @@ export class ItemsService {
       }));
     }
     return { resources, total };
+  }
+
+  async balance({ userId, happenedAfter, happenedBefore }: IItems) {
+    const list = await this.itemRepository
+      .commonQuery({
+        userId,
+        happenedAfter,
+        happenedBefore,
+      })
+      .getMany();
+    let expense = 0;
+    let income = 0;
+    list.forEach((i) => {
+      if (i.kind === KindEnum.Expense) {
+        expense += i.amount;
+      } else if (i.kind === KindEnum.Income) {
+        income += i.amount;
+      }
+    });
+    return { expense, income, balance: income - expense };
   }
 }

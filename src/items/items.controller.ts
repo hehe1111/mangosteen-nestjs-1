@@ -66,6 +66,19 @@ export class ItemsController {
     });
   }
 
+  @Get('balance')
+  balance(
+    @UserId() userId: number,
+    @Query('happenedAfter') happenedAfter?: Date,
+    @Query('happenedBefore') happenedBefore?: Date,
+  ) {
+    return this.itemsService.balance({
+      userId,
+      happenedAfter,
+      happenedBefore,
+    });
+  }
+
   @Get(':id')
   findOne(@UserId() userId: number, @Param('id') id: string) {
     return this.itemsService.findOne(userId, +id);
