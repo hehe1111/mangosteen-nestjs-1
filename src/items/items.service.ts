@@ -1,5 +1,3 @@
-// TODO: 文档
-
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
