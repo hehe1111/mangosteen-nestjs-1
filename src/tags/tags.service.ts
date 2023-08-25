@@ -4,10 +4,8 @@ import { UpdateTagDto } from './dto/update-tag.dto';
 import { ItemsService } from 'src/items/items.service';
 import KindEnum from 'src/enum/kind.enum';
 import { TagRepository } from './tags.repository';
-import { CreateTagVo } from './vo/create-tag.vo';
+import { CommonTagVo } from './vo/common-tag.vo';
 import { FindAllTagsVo } from './vo/find-all-tags.vo';
-import { FindOneTagVo } from './vo/find-one-tag.vo';
-import { UpdateTagVo } from './vo/update-tag-vo';
 
 interface IFindAllPayload {
   userId: number;
@@ -24,7 +22,7 @@ export class TagsService {
   @Inject(ItemsService)
   private itemService: ItemsService;
 
-  async create(createTagDto: CreateTagDto): Promise<CreateTagVo> {
+  async create(createTagDto: CreateTagDto): Promise<CommonTagVo> {
     const resource = await this.tagRepository.save(createTagDto);
     return { resource };
   }
@@ -44,7 +42,7 @@ export class TagsService {
     return { resources, count, page, pageSize };
   }
 
-  async findOne(userId: number, id: number): Promise<FindOneTagVo> {
+  async findOne(userId: number, id: number): Promise<CommonTagVo> {
     const resource = await this.tagRepository
       .commonQueryById(userId, id)
       .getOne();
@@ -55,7 +53,7 @@ export class TagsService {
     userId: number,
     id: number,
     updateTagDto: UpdateTagDto,
-  ): Promise<UpdateTagVo> {
+  ): Promise<CommonTagVo> {
     const query = this.tagRepository.commonQueryById(userId, id);
     const existed = await query.getExists();
     if (!existed) {

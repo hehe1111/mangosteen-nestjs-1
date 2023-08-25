@@ -14,12 +14,10 @@ import { SessionDto } from 'src/session/dto/session.dto';
 import { SessionVo } from 'src/session/vo/session.vo';
 import { GetUserInfoVo } from 'src/me/vo/get-user-info.vo';
 import { CreateTagDto } from 'src/tags/dto/create-tag.dto';
-import { CreateTagVo } from 'src/tags/vo/create-tag.vo';
+import { CommonTagVo } from 'src/tags/vo/common-tag.vo';
 import { FindAllTagsVo } from 'src/tags/vo/find-all-tags.vo';
 import KindEnum from 'src/enum/kind.enum';
-import { FindOneTagVo } from 'src/tags/vo/find-one-tag.vo';
 import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
-import { UpdateTagVo } from 'src/tags/vo/update-tag-vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -77,7 +75,7 @@ const decorators = {
     ApiResponse({
       status: HttpStatus.OK,
       description: '成功创建标签',
-      type: CreateTagVo,
+      type: CommonTagVo,
     }),
   ],
   findAllTags: [
@@ -125,7 +123,7 @@ const decorators = {
     ApiResponse({
       status: HttpStatus.OK,
       description: '成功查询某个标签',
-      type: FindOneTagVo,
+      type: CommonTagVo,
     }),
   ],
   updateTag: [
@@ -142,7 +140,7 @@ const decorators = {
     ApiResponse({
       status: HttpStatus.OK,
       description: '成功更新某个标签',
-      type: UpdateTagVo,
+      type: CommonTagVo,
     }),
   ],
 };
