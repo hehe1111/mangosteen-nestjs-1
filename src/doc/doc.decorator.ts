@@ -143,6 +143,22 @@ const decorators = {
       type: CommonTagVo,
     }),
   ],
+  deleteTag: [
+    ApiBearerAuth('bearer'),
+    ApiTags('标签'),
+    ApiOperation({ summary: '删除某个标签' }),
+    ApiParam({
+      name: 'id',
+      description: '标签 ID',
+      type: Number,
+      required: true,
+    }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功删除某个标签',
+      type: String,
+    }),
+  ],
 };
 
 export const Doc = (routeHandlerName: string) => {

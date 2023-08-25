@@ -57,6 +57,7 @@ export class TagsController {
     return this.tagsService.update(userId, +id, updateTagDto);
   }
 
+  @Doc('deleteTag')
   @Delete(':id')
   remove(@UserId() userId: number, @Param('id') id: string) {
     return this.tagsService.remove(userId, +id);
