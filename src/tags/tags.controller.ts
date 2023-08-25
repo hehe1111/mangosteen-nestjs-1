@@ -14,13 +14,16 @@ import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
 import { UserId } from 'src/user-id/user-id.decorator';
 import KindEnum from 'src/enum/kind.enum';
+import { Doc } from 'src/doc/doc.decorator';
+import { CreateTagVo } from './vo/create-tag.vo';
 
 @Controller('tags')
 export class TagsController {
   constructor(private readonly tagsService: TagsService) {}
 
+  @Doc('createTag')
   @Post()
-  create(@UserId() userId: number, @Body() createTagDto: CreateTagDto) {
+  create(@UserId() userId: number, @Body() createTagDto: CreateTagDto): Promise<CreateTagVo> {
     return this.tagsService.create({
       userId,
       ...(createTagDto || {}),

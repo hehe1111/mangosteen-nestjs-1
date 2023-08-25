@@ -4,6 +4,8 @@ import { SendValidationCodesDto } from 'src/validation-codes/dto/validation-code
 import { SessionDto } from 'src/session/dto/session.dto';
 import { SessionVo } from 'src/session/vo/session.vo';
 import { GetUserInfoVo } from 'src/me/vo/get-user-info.vo';
+import { CreateTagDto } from 'src/tags/dto/create-tag.dto';
+import { CreateTagVo } from 'src/tags/vo/create-tag.vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -26,11 +28,18 @@ const decorators = {
     ApiResponse({ status: HttpStatus.CREATED, description: '成功获取 JWT', type: SessionVo }),
   ],
   getUserInfo: [
-    ApiTags('当前用户'),
-    ApiOperation({ summary: '获取当前登录用户的信息', description: '在请求头带上 JWT 查询对应的用户信息' }),
     // ApiHeader({ name: 'Authorization', description: 'JWT', required: true }),
     ApiBearerAuth('bearer'),
+    ApiTags('当前用户'),
+    ApiOperation({ summary: '获取当前登录用户的信息', description: '在请求头带上 JWT 查询对应的用户信息' }),
     ApiResponse({ status: HttpStatus.OK, description: '成功获取 JWT', type: GetUserInfoVo }),
+  ],
+  createTag: [
+    ApiBearerAuth('bearer'),
+    ApiTags('标签'),
+    ApiOperation({ summary: '创建标签' }),
+    ApiBody({ type: CreateTagDto }),
+    ApiResponse({ status: HttpStatus.OK, description: '成功创建标签', type: CreateTagVo }),
   ],
 }
 
