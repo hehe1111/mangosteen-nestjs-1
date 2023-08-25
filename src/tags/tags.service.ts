@@ -66,7 +66,7 @@ export class TagsService {
     return { resource };
   }
 
-  async remove(userId: number, id: number) {
+  async remove(userId: number, id: number): Promise<'success'> {
     const record = await this.tagRepository
       .commonQueryById(userId, id)
       .leftJoinAndSelect('tag.items', 'i')
@@ -81,6 +81,8 @@ export class TagsService {
       async (i) => await this.itemService.remove(userId, i.id),
     );
 
-    return this.tagRepository.softDelete(id);
+    await this.tagRepository.softDelete(id);
+
+    return 'success';
   }
 }
