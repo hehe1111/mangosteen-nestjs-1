@@ -27,6 +27,11 @@ async function bootstrap() {
     .setDescription('采用 JWT 作为鉴权方式')
     .setVersion('1.0')
     // .addTag('test')
+    .addBearerAuth({
+      type: 'http',
+      description: '基于 jwt 的认证',
+      name: 'bearer'
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api-doc', app, document);

@@ -1,8 +1,9 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SendValidationCodesDto } from 'src/validation-codes/dto/validation-codes.dto';
 import { SessionDto } from 'src/session/dto/session.dto';
 import { SessionVo } from 'src/session/vo/session.vo';
+import { GetUserInfoVo } from 'src/me/vo/get-user-info.vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -23,6 +24,13 @@ const decorators = {
     ApiOperation({ summary: '获取 JWT', description: '用邮箱地址 + 验证码获取 JWT 完成登录操作' }),
     ApiBody({ type: SessionDto }),
     ApiResponse({ status: HttpStatus.CREATED, description: '成功获取 JWT', type: SessionVo }),
+  ],
+  getUserInfo: [
+    ApiTags('当前用户'),
+    ApiOperation({ summary: '获取当前登录用户的信息', description: '在请求头带上 JWT 查询对应的用户信息' }),
+    // ApiHeader({ name: 'Authorization', description: 'JWT', required: true }),
+    ApiBearerAuth('bearer'),
+    ApiResponse({ status: HttpStatus.OK, description: '成功获取 JWT', type: GetUserInfoVo }),
   ],
 }
 
