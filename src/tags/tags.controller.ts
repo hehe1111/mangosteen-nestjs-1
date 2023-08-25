@@ -51,6 +51,7 @@ export class TagsController {
     return this.tagsService.findOne(userId, +id);
   }
 
+  @Doc('updateTag')
   @Patch(':id')
   update(@UserId() userId: number, @Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagsService.update(userId, +id, updateTagDto);

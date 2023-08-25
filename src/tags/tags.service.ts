@@ -7,6 +7,7 @@ import { TagRepository } from './tags.repository';
 import { CreateTagVo } from './vo/create-tag.vo';
 import { FindAllTagsVo } from './vo/find-all-tags.vo';
 import { FindOneTagVo } from './vo/find-one-tag.vo';
+import { UpdateTagVo } from './vo/update-tag-vo';
 
 interface IFindAllPayload {
   userId: number;
@@ -50,7 +51,11 @@ export class TagsService {
     return { resource };
   }
 
-  async update(userId: number, id: number, updateTagDto: UpdateTagDto) {
+  async update(
+    userId: number,
+    id: number,
+    updateTagDto: UpdateTagDto,
+  ): Promise<UpdateTagVo> {
     const query = this.tagRepository.commonQueryById(userId, id);
     const existed = await query.getExists();
     if (!existed) {

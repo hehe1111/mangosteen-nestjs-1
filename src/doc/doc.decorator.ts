@@ -18,6 +18,8 @@ import { CreateTagVo } from 'src/tags/vo/create-tag.vo';
 import { FindAllTagsVo } from 'src/tags/vo/find-all-tags.vo';
 import KindEnum from 'src/enum/kind.enum';
 import { FindOneTagVo } from 'src/tags/vo/find-one-tag.vo';
+import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
+import { UpdateTagVo } from 'src/tags/vo/update-tag-vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -124,6 +126,23 @@ const decorators = {
       status: HttpStatus.OK,
       description: '成功查询某个标签',
       type: FindOneTagVo,
+    }),
+  ],
+  updateTag: [
+    ApiBearerAuth('bearer'),
+    ApiTags('标签'),
+    ApiOperation({ summary: '更新某个标签' }),
+    ApiParam({
+      name: 'id',
+      description: '标签 ID',
+      type: Number,
+      required: true,
+    }),
+    ApiBody({ type: UpdateTagDto }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功更新某个标签',
+      type: UpdateTagVo,
     }),
   ],
 };
