@@ -17,7 +17,7 @@ export class TagVo {
   @ApiProperty({ description: '标签收支类型。1-支出，2-收入', enum: KindEnum })
   kind: KindEnum
 
-  @ApiProperty({ description: '标签删除时间' })
+  @ApiProperty({ description: '标签删除时间', default: null })
   deletedAt: Date
 
   @ApiProperty({ description: '标签创建时间' })

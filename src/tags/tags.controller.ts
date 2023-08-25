@@ -46,6 +46,7 @@ export class TagsController {
     });
   }
 
+  @Doc('findOneTag')
   @Get(':id')
   findOne(@UserId() userId: number, @Param('id') id: string) {
     return this.tagsService.findOne(userId, +id);
