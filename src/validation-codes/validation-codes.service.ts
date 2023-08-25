@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { VALIDATION_CODES_KIND } from './enum/validation-codes.enum';
+import { ValidationCodesKindEnum } from './enum/validation-codes.enum';
 import { RedisService } from 'src/redis/redis.service';
 import { EmailService } from 'src/email/email.service';
 import { generateRedisKeyForCode } from 'src/utils/utils';
 
 interface IPayload {
   email: string;
-  kind: VALIDATION_CODES_KIND;
+  kind?: ValidationCodesKindEnum;
 }
 
 @Injectable()

@@ -4,6 +4,7 @@ import { FormatResponseInterceptor } from './format-response/format-response.int
 import { ConfigService } from '@nestjs/config';
 import { InvokeRecordInterceptor } from './invoke-record/invoke-record.interceptor';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // import { LoginGuardGuard } from './login-guard/login-guard.guard';
 // import { RequestMethod } from '@nestjs/common';
 
@@ -20,6 +21,15 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new FormatResponseInterceptor());
   app.useGlobalInterceptors(new InvokeRecordInterceptor());
+
+  const config = new DocumentBuilder()
+    .setTitle('记账 API 文档')
+    .setDescription('采用 JWT 作为鉴权方式')
+    .setVersion('1.0')
+    // .addTag('test')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api-doc', app, document);
 
   await app.listen(configService.get<number>('NESTJS_PORT'));
 }

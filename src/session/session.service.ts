@@ -19,7 +19,7 @@ export class SessionService {
   @Inject(ConfigService)
   private configService: ConfigService;
 
-  async generateJwtToken(payload: { email: string; code: string }) {
+  async generateJwtToken(payload: { email: string; code: number }) {
     const { email, code } = payload;
     const codeInRedis = await this.redisService.get(
       generateRedisKeyForCode(email),
@@ -29,7 +29,7 @@ export class SessionService {
       throw new UnauthorizedException('验证码已过期');
     }
 
-    if (code !== codeInRedis) {
+    if (code !== +codeInRedis) {
       throw new UnauthorizedException('验证码错误');
     }
 

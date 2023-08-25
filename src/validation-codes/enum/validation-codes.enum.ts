@@ -1,4 +1,4 @@
-export enum VALIDATION_CODES_KIND {
-  SIGN_IN = 'sing_in',
-  RESET = 'reset',
+export enum ValidationCodesKindEnum {
+  SignIn = 'sing_in',
+  Reset = 'reset',
 }
