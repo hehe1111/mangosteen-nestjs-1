@@ -73,7 +73,7 @@ const decorators = {
     ApiOperation({ summary: '创建标签' }),
     ApiBody({ type: CreateTagDto }),
     ApiResponse({
-      status: HttpStatus.OK,
+      status: HttpStatus.CREATED,
       description: '成功创建标签',
       type: CommonTagVo,
     }),
