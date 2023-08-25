@@ -1,11 +1,13 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { SendValidationCodesDto } from 'src/validation-codes/dto/validation-codes.dto';
 import { SessionDto } from 'src/session/dto/session.dto';
 import { SessionVo } from 'src/session/vo/session.vo';
 import { GetUserInfoVo } from 'src/me/vo/get-user-info.vo';
 import { CreateTagDto } from 'src/tags/dto/create-tag.dto';
 import { CreateTagVo } from 'src/tags/vo/create-tag.vo';
+import { FindAllTagsVo } from 'src/tags/vo/find-all-tags-vo';
+import KindEnum from 'src/enum/kind.enum';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -40,6 +42,34 @@ const decorators = {
     ApiOperation({ summary: '创建标签' }),
     ApiBody({ type: CreateTagDto }),
     ApiResponse({ status: HttpStatus.OK, description: '成功创建标签', type: CreateTagVo }),
+  ],
+  findAllTags: [
+    ApiBearerAuth('bearer'),
+    ApiTags('标签'),
+    ApiOperation({ summary: '查询标签列表' }),
+    ApiQuery({
+      name: 'page',
+      description: '分页页码',
+      type: Number,
+      required: false,
+      example: 1,
+    }),
+    ApiQuery({
+      name: 'pageSize',
+      description: '每页数据量',
+      type: Number,
+      required: false,
+      example: 10,
+    }),
+    ApiQuery({
+      name: 'kind',
+      description: '收支类型',
+      // 此处 type 不支持 KindEnum
+      // type: KindEnum,
+      required: false,
+      enum: KindEnum,
+    }),
+    ApiResponse({ status: HttpStatus.OK, description: '成功查询标签列表', type: FindAllTagsVo }),
   ],
 }
 

@@ -30,6 +30,7 @@ export class TagsController {
     } as CreateTagDto);
   }
 
+  @Doc('findAllTags')
   @Get()
   findAll(
     @UserId() userId: number,
