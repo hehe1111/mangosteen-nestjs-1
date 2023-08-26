@@ -70,7 +70,7 @@ export class ItemsService {
     return { resource };
   }
 
-  async remove(userId: number, id: number) {
+  async remove(userId: number, id: number): Promise<'success'> {
     const existed = await this.itemRepository
       .commonQueryById(userId, id)
       .getExists();
@@ -79,7 +79,9 @@ export class ItemsService {
       throw new BadRequestException('不能删除不存在的数据');
     }
 
-    return this.itemRepository.softDelete(id);
+    await this.itemRepository.softDelete(id);
+
+    return 'success'
   }
 
   async summary({

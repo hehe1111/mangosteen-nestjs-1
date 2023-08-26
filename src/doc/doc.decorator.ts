@@ -311,6 +311,22 @@ const decorators = {
       type: CommonItemWithTagVo,
     }),
   ],
+  deleteItem: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '删除某条收支记录' }),
+    ApiParam({
+      name: 'id',
+      description: '收支记录 ID',
+      type: Number,
+      required: true,
+    }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功删除某条收支记录',
+      type: String,
+    }),
+  ],
 };
 
 export const Doc = (routeHandlerName: string) => {

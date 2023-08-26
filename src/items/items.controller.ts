@@ -100,6 +100,7 @@ export class ItemsController {
     return this.itemsService.update(userId, +id, updateItemDto);
   }
 
+  @Doc('deleteItem')
   @Delete(':id')
   remove(@UserId() userId: number, @Param('id') id: string) {
     return this.itemsService.remove(userId, +id);
