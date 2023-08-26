@@ -24,6 +24,7 @@ import { FindAllItemsVo } from 'src/items/vo/find-all-items.vo';
 import GroupByEnum from 'src/enum/group-by.enum';
 import { SummaryItemVo } from 'src/items/vo/summary-item.vo';
 import { BalanceItemVo } from 'src/items/vo/balance-item.vo';
+import { UpdateItemDto } from 'src/items/dto/update-item.dto';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -293,7 +294,23 @@ const decorators = {
       type: CommonItemWithTagVo,
     }),
   ],
-
+  updateItem: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '更新某条收支记录' }),
+    ApiParam({
+      name: 'id',
+      description: '收支记录 ID',
+      type: Number,
+      required: true,
+    }),
+    ApiBody({ type: UpdateItemDto }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功更新某条收支记录',
+      type: CommonItemWithTagVo,
+    }),
+  ],
 };
 
 export const Doc = (routeHandlerName: string) => {

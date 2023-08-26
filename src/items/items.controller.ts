@@ -90,6 +90,7 @@ export class ItemsController {
     return this.itemsService.findOne(userId, +id);
   }
 
+  @Doc('updateItem')
   @Patch(':id')
   update(
     @UserId() userId: number,
