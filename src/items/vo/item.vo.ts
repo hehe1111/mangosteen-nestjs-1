@@ -33,3 +33,8 @@ export class ItemVo {
   @ApiProperty({ description: '收支记录所属标签 ID' })
   tagId: number
 }
+
+export class ItemWithTagVo extends ItemVo {
+  @ApiProperty({ description: '收支记录所属标签' })
+  tag: TagVo
+}

@@ -20,6 +20,7 @@ import KindEnum from 'src/enum/kind.enum';
 import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
 import { CreateItemDto } from 'src/items/dto/create-item.dto';
 import { CommonItemVo } from 'src/items/vo/common-item.vo';
+import { FindAllItemsVo } from 'src/items/vo/find-all-items.vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -101,7 +102,7 @@ const decorators = {
     }),
     ApiQuery({
       name: 'kind',
-      description: '收支类型',
+      description: '收支类型。1-支出，2-收入',
       // 此处 type 不支持 KindEnum
       // type: KindEnum,
       required: false,
@@ -172,6 +173,50 @@ const decorators = {
       status: HttpStatus.CREATED,
       description: '成功创建收支记录',
       type: CommonItemVo,
+    }),
+  ],
+  findAllItems: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '查询收支记录列表' }),
+    ApiQuery({
+      name: 'page',
+      description: '分页页码',
+      type: Number,
+      required: false,
+      example: 1,
+    }),
+    ApiQuery({
+      name: 'pageSize',
+      description: '每页数据量',
+      type: Number,
+      required: false,
+      example: 10,
+    }),
+    ApiQuery({
+      name: 'kind',
+      description: '收支类型。1-支出，2-收入',
+      // 此处 type 不支持 KindEnum
+      // type: KindEnum,
+      required: false,
+      enum: KindEnum,
+    }),
+    ApiQuery({
+      name: 'happenedAfter',
+      description: '收支起始时间',
+      type: Date,
+      required: false,
+    }),
+    ApiQuery({
+      name: 'happenedBefore',
+      description: '收支结束时间',
+      type: Date,
+      required: false,
+    }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功查询收支记录列表',
+      type: FindAllItemsVo,
     }),
   ],
 };

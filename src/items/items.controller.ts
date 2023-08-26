@@ -30,6 +30,7 @@ export class ItemsController {
     } as CreateItemDto);
   }
 
+  @Doc('findAllItems')
   @Get()
   findAll(
     @UserId() userId: number,

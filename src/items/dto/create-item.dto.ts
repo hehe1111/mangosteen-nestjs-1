@@ -8,7 +8,7 @@ export class CreateItemDto {
   @IsNumber()
   userId: number
 
-  @ApiProperty({ description: '收支记录所属标签' })
+  @ApiProperty({ description: '收支记录所属标签ID' })
   @IsNotEmpty({ message: '标签ID不能为空' })
   @IsNumber()
   tagId: number
