@@ -57,7 +57,7 @@ export class ItemsService {
     return { resource };
   }
 
-  async update(userId: number, id: number, updateItemDto: UpdateItemDto) {
+  async update(userId: number, id: number, updateItemDto: UpdateItemDto): Promise<CommonItemWithTagVo> {
     const query = this.itemRepository.commonQueryById(userId, id);
     const existed = await query.getExists();
     if (!existed) {
