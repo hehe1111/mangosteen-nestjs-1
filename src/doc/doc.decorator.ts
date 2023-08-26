@@ -19,7 +19,7 @@ import { FindAllTagsVo } from 'src/tags/vo/find-all-tags.vo';
 import KindEnum from 'src/enum/kind.enum';
 import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
 import { CreateItemDto } from 'src/items/dto/create-item.dto';
-import { CommonItemVo } from 'src/items/vo/common-item.vo';
+import { CommonItemVo, CommonItemWithTagVo } from 'src/items/vo/common-item.vo';
 import { FindAllItemsVo } from 'src/items/vo/find-all-items.vo';
 import GroupByEnum from 'src/enum/group-by.enum';
 import { SummaryItemVo } from 'src/items/vo/summary-item.vo';
@@ -276,7 +276,24 @@ const decorators = {
       description: '成功查询一段时间内的支出、收入、结余统计',
       type: BalanceItemVo,
     }),
-  ]
+  ],
+  findOneItem: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '查询某条收支记录' }),
+    ApiParam({
+      name: 'id',
+      description: '收支记录 ID',
+      type: Number,
+      required: true,
+    }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功查询某条收支记录',
+      type: CommonItemWithTagVo,
+    }),
+  ],
+
 };
 
 export const Doc = (routeHandlerName: string) => {
