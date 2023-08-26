@@ -204,13 +204,13 @@ const decorators = {
       enum: KindEnum,
     }),
     ApiQuery({
-      name: 'happenedAfter',
+      name: 'happened_after',
       description: '收支起始时间',
       type: Date,
       required: false,
     }),
     ApiQuery({
-      name: 'happenedBefore',
+      name: 'happened_before',
       description: '收支结束时间',
       type: Date,
       required: false,
@@ -239,13 +239,13 @@ const decorators = {
       enum: KindEnum,
     }),
     ApiQuery({
-      name: 'happenedAfter',
+      name: 'happened_after',
       description: '收支起始时间',
       type: Date,
       required: false,
     }),
     ApiQuery({
-      name: 'happenedBefore',
+      name: 'happened_before',
       description: '收支结束时间',
       type: Date,
       required: false,
@@ -261,13 +261,13 @@ const decorators = {
     ApiTags('收支记录'),
     ApiOperation({ summary: '查询一段时间内的支出、收入、结余统计' }),
     ApiQuery({
-      name: 'happenedAfter',
+      name: 'happened_after',
       description: '收支起始时间',
       type: Date,
       required: true,
     }),
     ApiQuery({
-      name: 'happenedBefore',
+      name: 'happened_before',
       description: '收支结束时间',
       type: Date,
       required: true,

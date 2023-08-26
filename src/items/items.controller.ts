@@ -37,8 +37,8 @@ export class ItemsController {
     @Query('page', new DefaultValuePipe(1)) page: number,
     @Query('pageSize', new DefaultValuePipe(10)) pageSize: number,
     @Query('kind') kind?: KindEnum,
-    @Query('happenedAfter') happenedAfter?: Date,
-    @Query('happenedBefore') happenedBefore?: Date,
+    @Query('happened_after') happenedAfter?: Date,
+    @Query('happened_before') happenedBefore?: Date,
   ) {
     return this.itemsService.findAll({
       userId,
@@ -58,8 +58,8 @@ export class ItemsController {
     @Query('group_by', new DefaultValuePipe(GroupByEnum.HappenedAt))
     groupBy: GroupByEnum,
     @Query('kind') kind?: KindEnum,
-    @Query('happenedAfter') happenedAfter?: Date,
-    @Query('happenedBefore') happenedBefore?: Date,
+    @Query('happened_after') happenedAfter?: Date,
+    @Query('happened_before') happenedBefore?: Date,
   ) {
     return this.itemsService.summary({
       userId,
@@ -74,8 +74,8 @@ export class ItemsController {
   @Get('balance')
   balance(
     @UserId() userId: number,
-    @Query('happenedAfter') happenedAfter?: Date,
-    @Query('happenedBefore') happenedBefore?: Date,
+    @Query('happened_after') happenedAfter?: Date,
+    @Query('happened_before') happenedBefore?: Date,
   ) {
     return this.itemsService.balance({
       userId,
