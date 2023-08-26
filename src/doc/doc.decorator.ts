@@ -18,6 +18,8 @@ import { CommonTagVo } from 'src/tags/vo/common-tag.vo';
 import { FindAllTagsVo } from 'src/tags/vo/find-all-tags.vo';
 import KindEnum from 'src/enum/kind.enum';
 import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
+import { CreateItemDto } from 'src/items/dto/create-item.dto';
+import { CommonItemVo } from 'src/items/vo/common-item.vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -67,6 +69,7 @@ const decorators = {
       type: GetUserInfoVo,
     }),
   ],
+
   createTag: [
     ApiBearerAuth('bearer'),
     ApiTags('标签'),
@@ -157,6 +160,18 @@ const decorators = {
       status: HttpStatus.OK,
       description: '成功删除某个标签',
       type: String,
+    }),
+  ],
+
+  createItem: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '创建收支记录' }),
+    ApiBody({ type: CreateItemDto }),
+    ApiResponse({
+      status: HttpStatus.CREATED,
+      description: '成功创建收支记录',
+      type: CommonItemVo,
     }),
   ],
 };

@@ -23,8 +23,14 @@ export class ItemEntity {
   })
   userId: number;
 
+  @Column({
+    name: 'tag_id', // 注意此处跟下面的名字相同
+    type: 'bigint',
+    comment: '标签 ID',
+  })
+  tagId: number; // 显式写明外键列，请求接口时只需要带关联对象的 ID 即可，不需要带整个关联对象
   @JoinColumn({
-    name: 'tag_id'
+    name: 'tag_id' // 注意此处跟上面的名字相同
   })
   @ManyToOne(() => TagEntity, { cascade: true })
   tag: TagEntity;

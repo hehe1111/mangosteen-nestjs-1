@@ -15,11 +15,13 @@ import { UpdateItemDto } from './dto/update-item.dto';
 import { UserId } from 'src/user-id/user-id.decorator';
 import KindEnum from 'src/enum/kind.enum';
 import GroupByEnum from 'src/enum/group-by.enum';
+import { Doc } from 'src/doc/doc.decorator';
 
 @Controller('items')
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
+  @Doc('createItem')
   @Post()
   create(@UserId() userId: number, @Body() createItemDto: CreateItemDto) {
     return this.itemsService.create({

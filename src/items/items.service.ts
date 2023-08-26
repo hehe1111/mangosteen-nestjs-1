@@ -39,7 +39,7 @@ export class ItemsService {
     const resources = await query
       .skip((page - 1) * pageSize)
       .take(pageSize)
-      .leftJoinAndSelect('item.tag', 't') // 获取关联标签
+      .leftJoinAndSelect('item.tag', 't') // 获取关联标签。第二个参数写啥都可以，只要是字符串就行，不会影响到输出的数据
       .getMany(); // 注意调用这一行
     const count = await query.getCount();
     return { resources, count, page, pageSize };

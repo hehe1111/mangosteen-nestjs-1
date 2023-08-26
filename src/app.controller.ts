@@ -61,7 +61,8 @@ export class AppController {
     item.happenedAt = new Date('2023-08-23T19:21:54+0800')
     item.kind = 1
     item.note = '第一笔支出'
-    item.tag = tag
+    // item.tag = tag
+    item.tagId = tag.id
     item.userId = user.id
 
     const item2 = new ItemEntity()
@@ -69,7 +70,8 @@ export class AppController {
     item2.happenedAt = new Date('2023-08-23T20:21:54+0800')
     item2.kind = 1
     item2.note = '第二笔支出'
-    item2.tag = tag2
+    // item2.tag = tag2
+    item2.tagId = tag2.id
     item2.userId = user.id
 
     const item3 = new ItemEntity()
@@ -77,7 +79,8 @@ export class AppController {
     item3.happenedAt = new Date('2023-08-23T21:21:54+0800')
     item3.kind = 1
     item3.note = '第三笔支出'
-    item3.tag = tag3
+    // item3.tag = tag3
+    item3.tagId = tag3.id
     item3.userId = user.id
 
     await this.entityManager.save(ItemEntity, item)
@@ -90,7 +93,8 @@ export class AppController {
       item4.happenedAt = new Date('2023-08-23T21:21:54+0800')
       item4.kind = 1
       item4.note = `第${i}笔支出`
-      item4.tag = tag3
+      // item4.tag = tag3
+      item4.tagId = tag3.id
       item4.userId = user.id
       await this.entityManager.save(ItemEntity, item4)
     }
