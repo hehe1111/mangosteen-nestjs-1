@@ -70,6 +70,7 @@ export class ItemsController {
     });
   }
 
+  @Doc('balanceItem')
   @Get('balance')
   balance(
     @UserId() userId: number,

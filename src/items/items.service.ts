@@ -8,6 +8,7 @@ import KindEnum from 'src/enum/kind.enum';
 import { CommonItemVo } from './vo/common-item.vo';
 import { FindAllItemsVo } from './vo/find-all-items.vo';
 import { SummaryItemVo } from './vo/summary-item.vo';
+import { BalanceItemVo } from './vo/balance-item.vo';
 
 interface IItems extends ICommonQuery {
   page?: number;
@@ -132,7 +133,7 @@ export class ItemsService {
     return { resources, total };
   }
 
-  async balance({ userId, happenedAfter, happenedBefore }: IItems) {
+  async balance({ userId, happenedAfter, happenedBefore }: IItems): Promise<BalanceItemVo> {
     const list = await this.itemRepository
       .commonQuery({
         userId,

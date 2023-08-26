@@ -23,6 +23,7 @@ import { CommonItemVo } from 'src/items/vo/common-item.vo';
 import { FindAllItemsVo } from 'src/items/vo/find-all-items.vo';
 import GroupByEnum from 'src/enum/group-by.enum';
 import { SummaryItemVo } from 'src/items/vo/summary-item.vo';
+import { BalanceItemVo } from 'src/items/vo/balance-item.vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -254,6 +255,28 @@ const decorators = {
       type: SummaryItemVo,
     }),
   ],
+  balanceItem: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '查询一段时间内的支出、收入、结余统计' }),
+    ApiQuery({
+      name: 'happenedAfter',
+      description: '收支起始时间',
+      type: Date,
+      required: true,
+    }),
+    ApiQuery({
+      name: 'happenedBefore',
+      description: '收支结束时间',
+      type: Date,
+      required: true,
+    }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功查询一段时间内的支出、收入、结余统计',
+      type: BalanceItemVo,
+    }),
+  ]
 };
 
 export const Doc = (routeHandlerName: string) => {
