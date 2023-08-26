@@ -3,13 +3,13 @@ import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from
 import KindEnum from "src/enum/kind.enum";
 
 export class CreateItemDto {
-  @ApiPropertyOptional({ description: '用户ID。会自动从请求头的 JWT 中获取' })
+  @ApiPropertyOptional({ description: '用户 ID。会自动从请求头的 JWT 中获取' })
   @IsOptional()
   @IsNumber()
   userId: number
 
-  @ApiProperty({ description: '收支记录所属标签ID' })
-  @IsNotEmpty({ message: '标签ID不能为空' })
+  @ApiProperty({ description: '收支记录所属标签 ID' })
+  @IsNotEmpty({ message: '标签 ID 不能为空' })
   @IsNumber()
   tagId: number
 
