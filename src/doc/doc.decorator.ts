@@ -21,6 +21,8 @@ import { UpdateTagDto } from 'src/tags/dto/update-tag.dto';
 import { CreateItemDto } from 'src/items/dto/create-item.dto';
 import { CommonItemVo } from 'src/items/vo/common-item.vo';
 import { FindAllItemsVo } from 'src/items/vo/find-all-items.vo';
+import GroupByEnum from 'src/enum/group-by.enum';
+import { SummaryItemVo } from 'src/items/vo/summary-item.vo';
 
 /**
  * @description 一个用于放置 Api 文档装饰器函数的对象
@@ -103,7 +105,7 @@ const decorators = {
     ApiQuery({
       name: 'kind',
       description: '收支类型。1-支出，2-收入',
-      // 此处 type 不支持 KindEnum
+      // 此处 type 不支持 enum
       // type: KindEnum,
       required: false,
       enum: KindEnum,
@@ -196,8 +198,6 @@ const decorators = {
     ApiQuery({
       name: 'kind',
       description: '收支类型。1-支出，2-收入',
-      // 此处 type 不支持 KindEnum
-      // type: KindEnum,
       required: false,
       enum: KindEnum,
     }),
@@ -217,6 +217,41 @@ const decorators = {
       status: HttpStatus.OK,
       description: '成功查询收支记录列表',
       type: FindAllItemsVo,
+    }),
+  ],
+  summaryItem: [
+    ApiBearerAuth('bearer'),
+    ApiTags('收支记录'),
+    ApiOperation({ summary: '按分组统计收支记录金额' }),
+    ApiQuery({
+      name: 'group_by',
+      description: '分组类型',
+      required: false,
+      enum: GroupByEnum,
+      example: GroupByEnum.HappenedAt
+    }),
+    ApiQuery({
+      name: 'kind',
+      description: '收支类型。1-支出，2-收入',
+      required: false,
+      enum: KindEnum,
+    }),
+    ApiQuery({
+      name: 'happenedAfter',
+      description: '收支起始时间',
+      type: Date,
+      required: false,
+    }),
+    ApiQuery({
+      name: 'happenedBefore',
+      description: '收支结束时间',
+      type: Date,
+      required: false,
+    }),
+    ApiResponse({
+      status: HttpStatus.OK,
+      description: '成功按分组统计收支记录金额',
+      type: SummaryItemVo,
     }),
   ],
 };

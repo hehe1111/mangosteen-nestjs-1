@@ -50,6 +50,7 @@ export class ItemsController {
     });
   }
 
+  @Doc('summaryItem')
   // ! 这个接口必须放到 @Get(':id') 前，否则 /summary 会被 @Get(':id') 拦截，就不会命中 @Get('summary')
   @Get('summary')
   summary(

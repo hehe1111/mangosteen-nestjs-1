@@ -5,6 +5,9 @@ import { ICommonQuery, ItemRepository } from './items.repository';
 import GroupByEnum from 'src/enum/group-by.enum';
 import { TagEntity } from 'src/tags/entities/tag.entity';
 import KindEnum from 'src/enum/kind.enum';
+import { CommonItemVo } from './vo/common-item.vo';
+import { FindAllItemsVo } from './vo/find-all-items.vo';
+import { SummaryItemVo } from './vo/summary-item.vo';
 
 interface IItems extends ICommonQuery {
   page?: number;
@@ -17,7 +20,7 @@ export class ItemsService {
   @Inject(ItemRepository)
   private itemRepository: ItemRepository;
 
-  async create(createItemDto: CreateItemDto) {
+  async create(createItemDto: CreateItemDto): Promise<CommonItemVo> {
     const resource = await this.itemRepository.save(createItemDto);
     return { resource };
   }
@@ -29,7 +32,7 @@ export class ItemsService {
     kind,
     happenedAfter,
     happenedBefore,
-  }: IItems) {
+  }: IItems): Promise<FindAllItemsVo> {
     const query = this.itemRepository.commonQuery({
       userId,
       kind,
@@ -84,7 +87,7 @@ export class ItemsService {
     kind,
     happenedAfter,
     happenedBefore,
-  }: IItems) {
+  }: IItems): Promise<SummaryItemVo> {
     const list = await this.itemRepository
       .commonQuery({
         userId,
@@ -107,7 +110,7 @@ export class ItemsService {
         total += i.amount;
       });
       resources = Object.keys(hash).map((key) => ({
-        happened_at: key,
+        happenedAt: key,
         amount: hash[key],
       }));
     } else if (groupBy === GroupByEnum.TagId) {
