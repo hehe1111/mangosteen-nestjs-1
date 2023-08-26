@@ -18,85 +18,85 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('init-data')
-  async initData() {
-    const user = new UserEntity()
-    user.email = '1787761330@qq.com'
+  // @Get('init-data')
+  // async initData() {
+  //   const user = new UserEntity()
+  //   user.email = '1787761330@qq.com'
 
-    await this.entityManager.save(UserEntity, user)
+  //   await this.entityManager.save(UserEntity, user)
 
-    const tag = new TagEntity()
-    tag.kind = 1
-    tag.name = '网球'
-    tag.sign = '🎾'
-    tag.userId = user.id
+  //   const tag = new TagEntity()
+  //   tag.kind = 1
+  //   tag.name = '网球'
+  //   tag.sign = '🎾'
+  //   tag.userId = user.id
 
-    const tag2 = new TagEntity()
-    tag2.kind = 1
-    tag2.name = '游泳'
-    tag2.sign = '🏊‍'
-    tag2.userId = user.id
+  //   const tag2 = new TagEntity()
+  //   tag2.kind = 1
+  //   tag2.name = '游泳'
+  //   tag2.sign = '🏊‍'
+  //   tag2.userId = user.id
 
-    const tag3 = new TagEntity()
-    tag3.kind = 1
-    tag3.name = '跑步'
-    tag3.sign = '🏃‍'
-    tag3.userId = user.id
+  //   const tag3 = new TagEntity()
+  //   tag3.kind = 1
+  //   tag3.name = '跑步'
+  //   tag3.sign = '🏃‍'
+  //   tag3.userId = user.id
 
-    await this.entityManager.save(TagEntity, tag)
-    await this.entityManager.save(TagEntity, tag2)
-    await this.entityManager.save(TagEntity, tag3)
+  //   await this.entityManager.save(TagEntity, tag)
+  //   await this.entityManager.save(TagEntity, tag2)
+  //   await this.entityManager.save(TagEntity, tag3)
 
-    for (let i = 0; i < 20; i++) {
-      const tag4 = new TagEntity()
-      tag4.kind = 1
-      tag4.name = '运动' + i
-      tag4.sign = '🏃‍'
-      tag4.userId = user.id
-      await this.entityManager.save(TagEntity, tag4)
-    }
+  //   for (let i = 0; i < 20; i++) {
+  //     const tag4 = new TagEntity()
+  //     tag4.kind = 1
+  //     tag4.name = '运动' + i
+  //     tag4.sign = '🏃‍'
+  //     tag4.userId = user.id
+  //     await this.entityManager.save(TagEntity, tag4)
+  //   }
 
-    const item = new ItemEntity()
-    item.amount = 1000
-    item.happenedAt = new Date('2023-08-23T19:21:54+0800')
-    item.kind = 1
-    item.note = '第一笔支出'
-    // item.tag = tag
-    item.tagId = tag.id
-    item.userId = user.id
+  //   const item = new ItemEntity()
+  //   item.amount = 1000
+  //   item.happenedAt = new Date('2023-08-23T19:21:54+0800')
+  //   item.kind = 1
+  //   item.note = '第一笔支出'
+  //   // item.tag = tag
+  //   item.tagId = tag.id
+  //   item.userId = user.id
 
-    const item2 = new ItemEntity()
-    item2.amount = 2000
-    item2.happenedAt = new Date('2023-08-23T20:21:54+0800')
-    item2.kind = 1
-    item2.note = '第二笔支出'
-    // item2.tag = tag2
-    item2.tagId = tag2.id
-    item2.userId = user.id
+  //   const item2 = new ItemEntity()
+  //   item2.amount = 2000
+  //   item2.happenedAt = new Date('2023-08-23T20:21:54+0800')
+  //   item2.kind = 1
+  //   item2.note = '第二笔支出'
+  //   // item2.tag = tag2
+  //   item2.tagId = tag2.id
+  //   item2.userId = user.id
 
-    const item3 = new ItemEntity()
-    item3.amount = 3000
-    item3.happenedAt = new Date('2023-08-23T21:21:54+0800')
-    item3.kind = 1
-    item3.note = '第三笔支出'
-    // item3.tag = tag3
-    item3.tagId = tag3.id
-    item3.userId = user.id
+  //   const item3 = new ItemEntity()
+  //   item3.amount = 3000
+  //   item3.happenedAt = new Date('2023-08-23T21:21:54+0800')
+  //   item3.kind = 1
+  //   item3.note = '第三笔支出'
+  //   // item3.tag = tag3
+  //   item3.tagId = tag3.id
+  //   item3.userId = user.id
 
-    await this.entityManager.save(ItemEntity, item)
-    await this.entityManager.save(ItemEntity, item2)
-    await this.entityManager.save(ItemEntity, item3)
+  //   await this.entityManager.save(ItemEntity, item)
+  //   await this.entityManager.save(ItemEntity, item2)
+  //   await this.entityManager.save(ItemEntity, item3)
 
-    for (let i = 4; i < 24; i++) {
-      const item4 = new ItemEntity()
-      item4.amount = 3000
-      item4.happenedAt = new Date('2023-08-23T21:21:54+0800')
-      item4.kind = 1
-      item4.note = `第${i}笔支出`
-      // item4.tag = tag3
-      item4.tagId = tag3.id
-      item4.userId = user.id
-      await this.entityManager.save(ItemEntity, item4)
-    }
-  }
+  //   for (let i = 4; i < 24; i++) {
+  //     const item4 = new ItemEntity()
+  //     item4.amount = 3000
+  //     item4.happenedAt = new Date('2023-08-23T21:21:54+0800')
+  //     item4.kind = 1
+  //     item4.note = `第${i}笔支出`
+  //     // item4.tag = tag3
+  //     item4.tagId = tag3.id
+  //     item4.userId = user.id
+  //     await this.entityManager.save(ItemEntity, item4)
+  //   }
+  // }
 }
