@@ -60,8 +60,11 @@ export class TagsService {
       throw new BadRequestException('不能更新不存在的数据');
     }
 
-    await this.tagRepository.save({ id, ...updateTagDto });
+    // await this.tagRepository.save({ id, ...updateTagDto });
+    // 等效，但是下面的会少一次 SELECT sql 执行
+    await this.tagRepository.update(id, updateTagDto);
     // ! save 只返回了有变动的部分字段，故需要重新查找
+    // ! update 只返回 { generatedMaps: [], raw: [], affected: 1 }，也需要重新查找
     const resource = await query.getOne();
     return { resource };
   }

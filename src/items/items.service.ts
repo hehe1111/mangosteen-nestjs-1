@@ -64,8 +64,11 @@ export class ItemsService {
       throw new BadRequestException('不能更新不存在的数据');
     }
 
-    await this.itemRepository.save({ id, ...updateItemDto });
+    // await this.itemRepository.save({ id, ...updateItemDto });
+    // 等效，但是下面的会少一次 SELECT sql 执行
+    await this.itemRepository.update(id, updateItemDto);
     // ! save 只返回了有变动的部分字段，故需要重新查找
+    // ! update 只返回 { generatedMaps: [], raw: [], affected: 1 }，也需要重新查找
     const resource = await query.leftJoinAndSelect('item.tag', 't').getOne();
     return { resource };
   }
