@@ -37,7 +37,7 @@ JWT_ACCESS_TOKEN_EXPIRES_IN=JWT 过期时间
 API_DOC_PATH=API 文档路径
 ```
 
-3. 启动 mysql、redis 实例。如果使用 docker，则是启动对应的 mysql、redis docker 容器
+3. 启动 MySQL、Redis 实例。如果使用 Docker，则是启动各自对应的容器
 4. 创建数据库
 
 ```sql
