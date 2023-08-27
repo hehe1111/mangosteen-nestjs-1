@@ -34,7 +34,7 @@ async function bootstrap() {
     })
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api-doc', app, document);
+  SwaggerModule.setup(configService.get<string>('API_DOC_PATH'), app, document);
 
   await app.listen(configService.get<number>('NESTJS_PORT'));
 }
