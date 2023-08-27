@@ -1,6 +1,6 @@
 # 一个用于记账的后台应用
 
-技术栈：nest.js + typeorm + mysql + redis + nodemailer + jwt
+技术栈：Nest.js + TypeORM + MySQL + Redis + nodemailer + JWT + Swagger
 
 ## 启动本项目
 
@@ -17,14 +17,14 @@ NODEMAILER_PORT=邮箱服务器端口
 NODEMAILER_EMAIL_FROM=发送邮件的邮箱
 NODEMAILER_AUTHORIZATION_CODE=发送邮件的邮箱的授权码
 
-# mysql 配置
+# MySQL 配置
 MYSQL_HOST=mysql 宿主机地址
 MYSQL_PORT=mysql 运行端口
 MYSQL_USERNAME=mysql 用户
 MYSQL_PASSWORD=mysql 密码
 MYSQL_DATABASE=mysql 数据库名字
 
-# redis 配置
+# Redis 配置
 REDIS_HOST=redis 宿主机地址
 REDIS_PORT=redis 运行端口
 REDIS_DATABASE=redis 数据库 # 阿拉伯数字。默认是 0
@@ -32,6 +32,9 @@ REDIS_DATABASE=redis 数据库 # 阿拉伯数字。默认是 0
 # JWT 配置
 JWT_SECRET=JWT 密钥
 JWT_ACCESS_TOKEN_EXPIRES_IN=JWT 过期时间
+
+# Swagger 配置
+API_DOC_PATH=API 文档路径
 ```
 
 3. 启动 mysql、redis 实例。如果使用 docker，则是启动对应的 mysql、redis docker 容器
@@ -42,5 +45,5 @@ CREATE SCHEMA <替换为上面的 MYSQL_DATABASE 的值> DEFAULT CHARACTER SET u
 ```
 
 5. 本地开发 `npm run start:dev`
-6. 文档：假设启动端口为 3000，本地开发时文档为：`http://localshot:3000/api-doc`
+6. API 文档：假设启动端口为 3000，配置的路径为 `/api-doc`，则本地开发时文档地址为：`http://localshot:3000/api-doc`
 7. 打包 `npm run build`
