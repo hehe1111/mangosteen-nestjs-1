@@ -28,7 +28,7 @@ export class CreateTagDto {
   sign: string;
 
   @ApiProperty({ description: '标签收支类型。1-支出，2-收入', required: true, enum: KindEnum })
-  @IsNotEmpty({ message: '标签收支类型不能为空' })
+  @IsNotEmpty({ message: '标签收支类型不能为空。1-支出，2-收入' })
   @IsEnum(KindEnum, { message: '标签收支类型只能是 1 或 2。1-支出，2-收入' })
   kind: number;
 }
