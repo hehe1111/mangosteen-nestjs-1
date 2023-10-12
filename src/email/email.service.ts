@@ -19,9 +19,12 @@ export class EmailService {
   }
 
   async sendMail({ to, subject, html }) {
+    const envTip = process.env.NODE_ENV === 'development'
+      ? `【${this.configService.get<string>('NODEMAILER_EMAIL_FROM_NAME')}】`
+      : ''
     await this.transporter.sendMail({
       from: {
-        name: '记账',
+        name: `${envTip}记账`,
         address: this.configService.get<string>('NODEMAILER_EMAIL_FROM'),
       },
       to,

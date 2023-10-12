@@ -19,7 +19,7 @@ import { ItemsModule } from './items/items.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `${__dirname}/.env`,
+      envFilePath: `${__dirname}/.${process.env.NODE_ENV}.env`,
     }),
 
     TypeOrmModule.forRootAsync({
@@ -58,7 +58,7 @@ import { ItemsModule } from './items/items.module';
         return {
           secret: configService.get<string>('JWT_SECRET'),
           signOptions: {
-            expiresIn: '30m', // 30m 默认 30 分钟
+            expiresIn: configService.get<string>('JWT_ACCESS_TOKEN_EXPIRES_IN') || '30m', // 30m 默认 30 分钟
           },
         };
       },
