@@ -19,7 +19,9 @@ import { ItemsModule } from './items/items.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `${__dirname}/.${process.env.NODE_ENV}.env`,
+      envFilePath: process.env.NODE_ENV === 'production'
+        ? `.${process.env.NODE_ENV}.env`
+        : `src/.${process.env.NODE_ENV}.env`,
     }),
 
     TypeOrmModule.forRootAsync({
