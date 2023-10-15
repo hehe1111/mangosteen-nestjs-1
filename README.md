@@ -45,5 +45,5 @@ CREATE SCHEMA <替换为上面的 MYSQL_DATABASE 的值> DEFAULT CHARACTER SET u
 ```
 
 5. 本地开发 `npm run start:dev`
-6. API 文档：假设启动端口为 3000，配置的路径为 `/api-doc`，则本地开发时文档地址为：`http://localshot:3000/api-doc`
+6. API 文档：假设启动端口为 3000，配置的路径为 `/apidoc`，则本地开发时文档地址为：`http://localshot:3000/apidoc`
 7. 打包 `npm run build`
