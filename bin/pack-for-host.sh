@@ -22,45 +22,44 @@ function create_dir {
 
 # 以时间位为版本号
 time=$(date +'%Y%m%d-%H%M%S')
-# 开发容器路径
 bin_dir=$(dirname $0)
-dockerfile=$bin_dir/../host.Dockerfile
-setup_host=$bin_dir/setup_host.sh
-setup_host=$bin_dir/src/
-
-# 宿主机路径
+setup_host=$bin_dir/setup-host.sh
+dockerfile=$bin_dir/../Dockerfile
+package_json=$bin_dir/../package.json
+package_lock_json=$bin_dir/../package-lock.json
 host_deploys=tmp/deploys
 host_deploy_dir=$host_deploys/$time
 backend_zip_file=$host_deploy_dir/backend_$time.tar.gz
+
+# ! 如果需要保留旧版本代码，可以注释这一个条件分支
+if [ -d "$host_deploys" ]; then
+  info "删除宿主机上的旧产物目录"
+  rm -rf $host_deploys
+fi
 
 info "创建宿主机下涉及的目录"
 create_dir $host_deploy_dir
 
 info "生成后端代码压缩文件"
-# 需要上传的文件
-# src/
-# test/
-# *.Dockerfile
-# package.json
-# package-lock.json
-# tsconfig.build.json
-# tsconfig.json
 tar \
-  --exclude="bin/pack-for-*.sh" \
+  --exclude="bin" \
   --exclude="dist" \
   --exclude="node_modules" \
   --exclude="tmp" \
-  --exclude=".dockerignore" \
-  --exclude="*.Dockerfile" \
-  --exclude=".eslintrc.js" \
-  --exclude=".gitoignore" \
-  --exclude=".prettierrc" \
+  --exclude="Dockerfile" \
   --exclude="nest-cli.json" \
+  --exclude="package*.json" \
   --exclude="README.md" \
   -czv -f $backend_zip_file *
 
-info "复制必要的文件、产物、依赖、API 文档、前端代码到宿主机"
-cp $dockerfile $host_deploy_dir/Dockerfile
+info "复制必要的文件到宿主机"
+cp \
+  $setup_host \
+  $dockerfile \
+  $package_json \
+  $package_lock_json \
+  $host_deploy_dir
+
 info "输出当前版本到宿主机：$time"
 echo $time > $host_deploy_dir/version
 

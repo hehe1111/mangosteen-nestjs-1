@@ -23,9 +23,10 @@ function set_env {
 user=mangosteen
 network_name=network1
 app_repo_name=mangosteen-nestjs-1
-app_container_name=mangosteen-nestjs-1-production
+app_container_name=$app_repo_name-production
+
 # ! . 是执行该脚本时，所在的目录，而不是脚本本身存放的目录
-version=$(cat ./../version)
+version=$(cat ./version)
 info "当前版本：$version"
 
 echo $MYSQL_HOST
@@ -35,13 +36,14 @@ echo $REDIS_HOST
 info "创建网络"
 if [ -z "$(docker network ls -q -f name=^$network_name$)" ]; then
   docker network create $network_name
+  info "创建网络成功"
 else
-  info "已存在 $network_name"
+  info "网络已存在 $network_name"
 fi
 
 info "设置宿主机的环境变量"
 set_env MYSQL_HOST
-set_env MYSQL_PASSWORD
+set_env MYSQL_PASSWORD "密码不要太长，通过 bash 查看数据库时需要输入密码的"
 
 info "创建数据库"
 if [ "$(docker ps -aq -f name=^$MYSQL_HOST$)" ]; then
@@ -51,7 +53,7 @@ else
     --network=$network_name \
     --name $MYSQL_HOST \
     -e MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD \
-    -e MYSQL_DATABASE=mangosteen_nestjs_1_production \
+    -e MYSQL_DATABASE=mangosteen_production \
     -v D:\\practices\\$MYSQL_HOST:/var/lib/mysql \
     mysql:latest \
     --character-set-server=utf8mb4 \
