@@ -38,35 +38,41 @@ package_lock_json=$bin_dir/../package-lock.json
 local_deploys=tmp/deploys
 local_deploy_dir=$local_deploys/$time
 
-# 后端代码压缩产物名称
-backend_zip_file=$local_deploy_dir/backend_$time.tar.gz
-
-# 部署机路径
+# 部署机下的部署目录
 host_deploys=/home/$user/deploys
 host_deploy_dir=$host_deploys/$time
+
+# dist 压缩文件名
+backend_dist_zip_file=$local_deploy_dir/backend_dist_$time.tar.gz
 
 # ! 如果需要保留旧版本代码，可以注释下面的语句
 info "删除部署机上的旧产物目录"
 ssh $remote "rm -rf $host_deploys"
 
-info "创建本地涉及的目录"
+info "创建本地部署目录"
 create_dir $local_deploy_dir
 
-info "创建部署机下涉及的目录"
+info "创建部署机下的部署目录"
 ssh $remote "mkdir -p $host_deploy_dir"
 
-info "生成后端代码压缩文件"
+info "删除旧有 dist 目录"
+if [ -d "dist" ]; then
+  rm -rf "dist"
+  info "删除旧有 dist 目录成功"
+else
+  info "不存在旧有 dist 目录，无需删除"
+fi
+
+info "执行 npm run build"
+npm run build
+info "执行 npm run build 结束"
+
+info "压缩 dist 目录"
 tar \
-  --exclude="bin" \
-  --exclude="dist" \
-  --exclude="node_modules" \
-  --exclude="tmp" \
-  --exclude="Dockerfile" \
-  --exclude="nest-cli.json" \
-  --exclude="package*.json" \
-  --exclude="README.md" \
-  -cz -f $backend_zip_file *
+  --exclude=".development.env" \
+  -cz -f $backend_dist_zip_file -C dist .
 # 加 -v 会把**被打包的文件**都列出来，不加则不列
+info "压缩 dist 目录成功"
 
 info "上传必要的文件到部署机"
 scp \
@@ -74,13 +80,15 @@ scp \
   $dockerfile \
   $package_json \
   $package_lock_json \
-  $backend_zip_file \
+  $backend_dist_zip_file \
   $remote:$host_deploy_dir
 
 info "输出当前版本到部署机：$time"
 ssh $remote "echo $time > $host_deploy_dir/version"
 
-info "删除本地的旧产物目录"
+info "删除本地部署目录"
 rm -rf $local_deploys
+info "删除 dist 目录"
+rm -rf dist
 
 info "DONE!"
