@@ -1,7 +1,7 @@
 FROM node:20-alpine3.18
 # 默认已安装了 yarn
 
-# RUN npm config set registry https://registry.npmmirror.com
+RUN npm config set registry https://registry.npmmirror.com
 
 ENV NODE_ENV production
 
