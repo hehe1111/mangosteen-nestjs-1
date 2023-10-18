@@ -20,10 +20,16 @@ function set_env {
   echo "$name 已保存至 ~/.bashrc"
 }
 
-# user=mangosteen
+user=mangosteen
 network_name=network1
 app_repo_name=mangosteen-nestjs-1
 app_container_name=$app_repo_name-production
+volume_mangosteen_data=/home/$user/mangosteen-data
+
+# 用于持久化 mysql、redis 数据的目录
+if [ ! -d "$volume_mangosteen_data" ]; then
+  mkdir -p "$volume_mangosteen_data"
+fi
 
 # ! . 是执行该脚本时，所在的目录，而不是脚本本身存放的目录
 version=$(cat ./version)
@@ -57,7 +63,7 @@ else
     --name $MYSQL_HOST \
     -e MYSQL_ROOT_PASSWORD=$MYSQL_PASSWORD \
     -e MYSQL_DATABASE=$MYSQL_DATABASE \
-    -v D:\\practices\\$MYSQL_HOST:/var/lib/mysql \
+    -v $volume_mangosteen_data/$MYSQL_HOST:/var/lib/mysql \
     mysql:latest \
     --character-set-server=utf8mb4 \
     --collation-server=utf8mb4_unicode_ci \
@@ -72,7 +78,7 @@ else
   redis_container_id=$(docker run -d \
     --network=$network_name \
     --name $REDIS_HOST \
-    -v D:\\practices\\$REDIS_HOST:/data \
+    -v $volume_mangosteen_data/$REDIS_HOST:/data \
     redis:latest \
   )
   info "创建 Redis 成功：$redis_container_id"
