@@ -51,6 +51,7 @@ set_env REDIS_HOST
 info "创建数据库"
 if [ "$(docker ps -aq -f name=^$MYSQL_HOST$)" ]; then
   info "数据库已存在"
+  docker start $MYSQL_HOST
 else
   mysql_container_id=$(docker run -d \
     --network=$network_name \
@@ -68,6 +69,7 @@ fi
 info "创建 Redis"
 if [ "$(docker ps -aq -f name=^$REDIS_HOST$)" ]; then
   info "Redis 已存在"
+  docker start $REDIS_HOST
 else
   redis_container_id=$(docker run -d \
     --network=$network_name \
