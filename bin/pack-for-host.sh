@@ -67,7 +67,7 @@ tar \
 info "压缩 dist 目录成功"
 
 info "上传必要的文件到部署机"
-scp \
+cp \
   $setup_host \
   $dockerfile \
   $package_json \

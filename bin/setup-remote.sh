@@ -29,11 +29,6 @@ app_container_name=$app_repo_name-production
 version=$(cat ./version)
 info "当前版本：$version"
 
-echo $MYSQL_HOST
-echo $MYSQL_PASSWORD
-echo $MYSQL_DATABASE
-echo $REDIS_HOST
-
 info "创建网络"
 if [ -z "$(docker network ls -q -f name=^$network_name$)" ]; then
   docker network create $network_name
