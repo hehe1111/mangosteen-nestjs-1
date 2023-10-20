@@ -33,6 +33,7 @@ setup_host=$bin_dir/setup-remote.sh
 dockerfile=$bin_dir/../Dockerfile
 package_json=$bin_dir/../package.json
 package_lock_json=$bin_dir/../package-lock.json
+nginx_default_conf=$bin_dir/../nginx.default.conf
 
 # 本地部署目录
 local_deploys=tmp/deploys
@@ -81,6 +82,7 @@ scp \
   $package_json \
   $package_lock_json \
   $backend_dist_zip_file \
+  $nginx_default_conf \
   $remote:$host_deploy_dir
 
 info "输出当前版本到部署机：$time"
