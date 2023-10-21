@@ -94,3 +94,5 @@ info "删除 dist 目录"
 rm -rf dist
 
 info "DONE!"
+
+info "另外请确认SSL证书是否已上传"
