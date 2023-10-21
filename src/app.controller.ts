@@ -1,22 +1,22 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { UserEntity } from './users/entities/user.entity';
-import { TagEntity } from './tags/entities/tag.entity';
-import { ItemEntity } from './items/entities/item.entity';
-import { InjectEntityManager } from '@nestjs/typeorm';
-import { EntityManager } from 'typeorm';
+// import { AppService } from './app.service';
+// import { UserEntity } from './users/entities/user.entity';
+// import { TagEntity } from './tags/entities/tag.entity';
+// import { ItemEntity } from './items/entities/item.entity';
+// import { InjectEntityManager } from '@nestjs/typeorm';
+// import { EntityManager } from 'typeorm';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  // constructor(private readonly appService: AppService) { }
 
-  @InjectEntityManager()
-  private entityManager: EntityManager;
+  // @InjectEntityManager()
+  // private entityManager: EntityManager;
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  // @Get()
+  // getHello(): string {
+  //   return this.appService.getHello();
+  // }
 
   // @Get('init-data')
   // async initData() {
