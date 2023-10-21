@@ -1,0 +1,57 @@
+diff --git a/node_modules/@nestjs/swagger/dist/interfaces/swagger-custom-options.interface.d.ts b/node_modules/@nestjs/swagger/dist/interfaces/swagger-custom-options.interface.d.ts
+index e8d49d9..c078db3 100644
+--- a/node_modules/@nestjs/swagger/dist/interfaces/swagger-custom-options.interface.d.ts
++++ b/node_modules/@nestjs/swagger/dist/interfaces/swagger-custom-options.interface.d.ts
+@@ -10,6 +10,7 @@ export interface SwaggerCustomOptions {
+     customJsStr?: string | string[];
+     customfavIcon?: string;
+     customSwaggerUiPath?: string;
++    customSwaggerUiDistExternalUrl?: string;
+     swaggerUrl?: string;
+     customSiteTitle?: string;
+     validatorUrl?: string;
+diff --git a/node_modules/@nestjs/swagger/dist/swagger-ui/constants.js b/node_modules/@nestjs/swagger/dist/swagger-ui/constants.js
+index 6f47648..dbd0015 100644
+--- a/node_modules/@nestjs/swagger/dist/swagger-ui/constants.js
++++ b/node_modules/@nestjs/swagger/dist/swagger-ui/constants.js
+@@ -10,7 +10,7 @@ exports.htmlTemplateString = `
+ <head>
+   <meta charset="UTF-8">
+   <title><% title %></title>
+-  <link rel="stylesheet" type="text/css" href="<% baseUrl %>swagger-ui.css" >
++  <link rel="stylesheet" type="text/css" href="<% swagger-ui-dist-url %>swagger-ui.css" >
+   <% favIconString %>
+   <style>
+     html
+@@ -71,8 +71,8 @@ exports.htmlTemplateString = `
+ 
+ <div id="swagger-ui"></div>
+ 
+-<script src="<% baseUrl %>swagger-ui-bundle.js"> </script>
+-<script src="<% baseUrl %>swagger-ui-standalone-preset.js"> </script>
++<script src="<% swagger-ui-dist-url %>swagger-ui-bundle.js"> </script>
++<script src="<% swagger-ui-dist-url %>swagger-ui-standalone-preset.js"> </script>
+ <script src="<% baseUrl %>swagger-ui-init.js"> </script>
+ <% customJs %>
+ <% customJsStr %>
+diff --git a/node_modules/@nestjs/swagger/dist/swagger-ui/swagger-ui.js b/node_modules/@nestjs/swagger/dist/swagger-ui/swagger-ui.js
+index c067725..600a0f9 100644
+--- a/node_modules/@nestjs/swagger/dist/swagger-ui/swagger-ui.js
++++ b/node_modules/@nestjs/swagger/dist/swagger-ui/swagger-ui.js
+@@ -43,7 +43,7 @@ function toTags(customCode, toScript) {
+     }
+ }
+ function buildSwaggerHTML(baseUrl, swaggerDoc, customOptions = {}) {
+-    const { customCss = '', customJs = '', customJsStr = '', customfavIcon = false, customSiteTitle = 'Swagger UI', customCssUrl = '', explorer = false } = customOptions;
++    const { customCss = '', customJs = '', customJsStr = '', customfavIcon = false, customSiteTitle = 'Swagger UI', customCssUrl = '', explorer = false, customSwaggerUiDistExternalUrl = '' } = customOptions;
+     const favIconString = customfavIcon
+         ? `<link rel='icon' href='${customfavIcon}' />`
+         : constants_1.favIconHtml;
+@@ -55,6 +55,7 @@ function buildSwaggerHTML(baseUrl, swaggerDoc, customOptions = {}) {
+         .replace('<% explorerCss %>', explorerCss)
+         .replace('<% favIconString %>', favIconString)
+         .replace(/<% baseUrl %>/g, baseUrl)
++        .replace(/<% swagger-ui-dist-url %>/g, customSwaggerUiDistExternalUrl || baseUrl)
+         .replace('<% customJs %>', toTags(customJs, toExternalScriptTag))
+         .replace('<% customJsStr %>', toTags(customJsStr, toInlineScriptTag))
+         .replace('<% customCssUrl %>', toTags(customCssUrl, toExternalStylesheetTag))

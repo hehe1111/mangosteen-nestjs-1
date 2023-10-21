@@ -17,6 +17,7 @@ COPY package-lock.json .
 # RUN npm install --omit=dev --verbose
 RUN yarn install --production --verbose
 
+COPY patches/ ./patches/
 ADD backend_dist_*.tar.gz .
 
 EXPOSE 3000

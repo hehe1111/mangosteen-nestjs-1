@@ -20,6 +20,11 @@ function create_dir {
   fi
 }
 
+if [ -z "$IP" ]; then
+  info "IP 不能为空。请带上 IP 参数重新执行"
+  exit 1
+fi
+
 user=mangosteen
 remote=$user@$IP
 
@@ -33,6 +38,7 @@ setup_host=$bin_dir/setup-remote.sh
 dockerfile=$bin_dir/../Dockerfile
 package_json=$bin_dir/../package.json
 package_lock_json=$bin_dir/../package-lock.json
+patches_dir=$bin_dir/../patches/
 nginx_default_conf=$bin_dir/../nginx.default.conf
 
 # 本地部署目录
@@ -76,12 +82,13 @@ tar \
 info "压缩 dist 目录成功"
 
 info "上传必要的文件到部署机"
-scp \
+scp -r \
   $setup_host \
   $dockerfile \
   $package_json \
   $package_lock_json \
   $backend_dist_zip_file \
+  $patches_dir \
   $nginx_default_conf \
   $remote:$host_deploy_dir
 

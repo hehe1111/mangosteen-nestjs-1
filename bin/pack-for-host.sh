@@ -30,6 +30,7 @@ setup_host=$bin_dir/setup-host.sh
 dockerfile=$bin_dir/../Dockerfile
 package_json=$bin_dir/../package.json
 package_lock_json=$bin_dir/../package-lock.json
+patches_dir=$bin_dir/../patches/
 
 # 本地部署目录
 local_deploys=tmp/deploys
@@ -67,11 +68,12 @@ tar \
 info "压缩 dist 目录成功"
 
 info "上传必要的文件到部署机"
-cp \
+cp -r \
   $setup_host \
   $dockerfile \
   $package_json \
   $package_lock_json \
+  $patches_dir \
   $local_deploy_dir
 
 info "输出当前版本到部署机：$time"
