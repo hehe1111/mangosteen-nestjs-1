@@ -5,7 +5,7 @@
 ## 启动本项目
 
 1. 安装依赖 `npm install`
-2. 配置 `src/.env` 文件：
+2. 开发环境配置 `src/.development.env` 文件，生产环境配置 `src/.production.env` 文件：
 
 ```bash
 # 项目启动端口
@@ -37,7 +37,7 @@ JWT_ACCESS_TOKEN_EXPIRES_IN=JWT 过期时间
 API_DOC_PATH=API 文档路径
 ```
 
-3. 启动 MySQL、Redis 实例。如果使用 Docker，则是启动各自对应的容器
+3. 启动 MySQL、Redis。如果使用 Docker，则是启动各自对应的容器
 4. 创建数据库
 
 ```sql
