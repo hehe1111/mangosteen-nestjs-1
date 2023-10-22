@@ -103,8 +103,8 @@ nginx_container_id=$(docker run -d \
   --network=$network_name \
   -p 80:80 \
   -p 443:443 \
-  -v E://repo/mangosteen-nestjs-1/tmp/deploys/$version/host.nginx.default.conf:/etc/nginx/conf.d/default.conf \
-  -v E://repo/mangosteen-nestjs-1/tmp/ssl/:/ssl/ \
+  -v E://repo/$app_repo_name/tmp/deploys/$version/host.nginx.default.conf:/etc/nginx/conf.d/default.conf \
+  -v E://repo/$app_repo_name/tmp/ssl/:/ssl/ \
   nginx:latest
 )
 info "创建 nginx 容器成功：$nginx_container_id"
