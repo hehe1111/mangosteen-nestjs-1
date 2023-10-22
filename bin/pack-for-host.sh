@@ -31,6 +31,7 @@ dockerfile=$bin_dir/../Dockerfile
 package_json=$bin_dir/../package.json
 package_lock_json=$bin_dir/../package-lock.json
 patches_dir=$bin_dir/../patches/
+nginx_default_conf=$bin_dir/../host.nginx.default.conf
 
 # 本地部署目录
 local_deploys=tmp/deploys
@@ -74,6 +75,7 @@ cp -r \
   $package_json \
   $package_lock_json \
   $patches_dir \
+  $nginx_default_conf \
   $local_deploy_dir
 
 info "输出当前版本到部署机：$time"

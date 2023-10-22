@@ -20,10 +20,11 @@ function set_env {
   echo "$name 已保存至 ~/.bashrc"
 }
 
-# user=mangosteen
+user=mangosteen
 network_name=network1
 app_repo_name=mangosteen-nestjs-1
 app_container_name=$app_repo_name-production
+nginx_container_name=nginx-$app_repo_name-production
 
 # ! . 是执行该脚本时，所在的目录，而不是脚本本身存放的目录
 version=$(cat ./version)
@@ -91,5 +92,21 @@ app_container_id=$(docker run -d \
   $app_repo_name:$version \
 )
 info "创建应用容器成功：$app_container_id"
+
+if [ "$(docker ps -aq -f name=^$nginx_container_name$)" ]; then
+  info "删除旧有 nginx 容器"
+  docker rm -f $nginx_container_name
+fi
+info "创建 nginx 容器，服务 80、443 端口"
+nginx_container_id=$(docker run -d \
+  --name=$nginx_container_name \
+  --network=$network_name \
+  -p 80:80 \
+  -p 443:443 \
+  -v E://repo/mangosteen-nestjs-1/tmp/deploys/$version/host.nginx.default.conf:/etc/nginx/conf.d/default.conf \
+  -v E://repo/mangosteen-nestjs-1/tmp/ssl/:/ssl/ \
+  nginx:latest
+)
+info "创建 nginx 容器成功：$nginx_container_id"
 
 info "DONE!"
