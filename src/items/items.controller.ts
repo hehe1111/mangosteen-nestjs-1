@@ -7,15 +7,15 @@ import {
   Param,
   Delete,
   DefaultValuePipe,
-  Query,
-} from '@nestjs/common';
-import { ItemsService } from './items.service';
-import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
-import { UserId } from 'src/user-id/user-id.decorator';
-import KindEnum from 'src/enum/kind.enum';
-import GroupByEnum from 'src/enum/group-by.enum';
-import { Doc } from 'src/doc/doc.decorator';
+  Query
+} from '@nestjs/common'
+import { ItemsService } from './items.service'
+import { CreateItemDto } from './dto/create-item.dto'
+import { UpdateItemDto } from './dto/update-item.dto'
+import { UserId } from 'src/user-id/user-id.decorator'
+import KindEnum from 'src/enum/kind.enum'
+import GroupByEnum from 'src/enum/group-by.enum'
+import { Doc } from 'src/doc/doc.decorator'
 
 @Controller('items')
 export class ItemsController {
@@ -26,8 +26,8 @@ export class ItemsController {
   create(@UserId() userId: number, @Body() createItemDto: CreateItemDto) {
     return this.itemsService.create({
       userId,
-      ...(createItemDto || {}),
-    } as CreateItemDto);
+      ...(createItemDto || {})
+    } as CreateItemDto)
   }
 
   @Doc('findAllItems')
@@ -38,7 +38,7 @@ export class ItemsController {
     @Query('pageSize', new DefaultValuePipe(10)) pageSize: number,
     @Query('kind') kind?: KindEnum,
     @Query('happened_after') happenedAfter?: Date,
-    @Query('happened_before') happenedBefore?: Date,
+    @Query('happened_before') happenedBefore?: Date
   ) {
     return this.itemsService.findAll({
       userId,
@@ -46,8 +46,8 @@ export class ItemsController {
       pageSize: +pageSize,
       kind: +kind,
       happenedAfter,
-      happenedBefore,
-    });
+      happenedBefore
+    })
   }
 
   @Doc('summaryItem')
@@ -59,15 +59,15 @@ export class ItemsController {
     groupBy: GroupByEnum,
     @Query('kind') kind?: KindEnum,
     @Query('happened_after') happenedAfter?: Date,
-    @Query('happened_before') happenedBefore?: Date,
+    @Query('happened_before') happenedBefore?: Date
   ) {
     return this.itemsService.summary({
       userId,
       groupBy,
       kind: +kind,
       happenedAfter,
-      happenedBefore,
-    });
+      happenedBefore
+    })
   }
 
   @Doc('balanceItem')
@@ -75,19 +75,19 @@ export class ItemsController {
   balance(
     @UserId() userId: number,
     @Query('happened_after') happenedAfter?: Date,
-    @Query('happened_before') happenedBefore?: Date,
+    @Query('happened_before') happenedBefore?: Date
   ) {
     return this.itemsService.balance({
       userId,
       happenedAfter,
-      happenedBefore,
-    });
+      happenedBefore
+    })
   }
 
   @Doc('findOneItem')
   @Get(':id')
   findOne(@UserId() userId: number, @Param('id') id: string) {
-    return this.itemsService.findOne(userId, +id);
+    return this.itemsService.findOne(userId, +id)
   }
 
   @Doc('updateItem')
@@ -95,14 +95,14 @@ export class ItemsController {
   update(
     @UserId() userId: number,
     @Param('id') id: string,
-    @Body() updateItemDto: UpdateItemDto,
+    @Body() updateItemDto: UpdateItemDto
   ) {
-    return this.itemsService.update(userId, +id, updateItemDto);
+    return this.itemsService.update(userId, +id, updateItemDto)
   }
 
   @Doc('deleteItem')
   @Delete(':id')
   remove(@UserId() userId: number, @Param('id') id: string) {
-    return this.itemsService.remove(userId, +id);
+    return this.itemsService.remove(userId, +id)
   }
 }

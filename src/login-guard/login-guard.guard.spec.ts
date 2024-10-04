@@ -1,7 +1,7 @@
-import { LoginGuardGuard } from './login-guard.guard';
+import { LoginGuardGuard } from './login-guard.guard'
 
 describe('LoginGuardGuard', () => {
   it('should be defined', () => {
-    expect(new LoginGuardGuard()).toBeDefined();
-  });
-});
+    expect(new LoginGuardGuard()).toBeDefined()
+  })
+})

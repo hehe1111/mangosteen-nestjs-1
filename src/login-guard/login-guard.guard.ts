@@ -1,16 +1,22 @@
-import { CanActivate, ExecutionContext, Injectable, Inject, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  Inject,
+  UnauthorizedException
+} from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { Observable } from 'rxjs'
 
 const WHITE_LIST = ['', '/validation_codes', '/session', '/init-data']
 
 @Injectable()
 export class LoginGuardGuard implements CanActivate {
   @Inject(JwtService)
-  private jwtService: JwtService;
+  private jwtService: JwtService
 
   canActivate(
-    context: ExecutionContext,
+    context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest()
 
@@ -27,7 +33,7 @@ export class LoginGuardGuard implements CanActivate {
     let data
     try {
       const jwt = authorization.split(' ')?.[1]
-      data = this.jwtService.verify(jwt);
+      data = this.jwtService.verify(jwt)
     } catch (e) {
       throw new UnauthorizedException('无效登陆凭证，请重新登录')
     }
@@ -35,6 +41,6 @@ export class LoginGuardGuard implements CanActivate {
     // ! 给请求加上用户信息，方便后续用来查找用户
     request.user = { userId: data.userId }
 
-    return true;
+    return true
   }
 }

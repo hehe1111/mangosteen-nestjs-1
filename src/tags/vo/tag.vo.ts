@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger"
-import KindEnum from "src/enum/kind.enum"
+import { ApiProperty } from '@nestjs/swagger'
+import KindEnum from 'src/enum/kind.enum'
 
 export class TagVo {
   @ApiProperty({ description: '用户 ID' })

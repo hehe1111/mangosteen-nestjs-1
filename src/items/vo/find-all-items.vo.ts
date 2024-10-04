@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger"
-import { ItemWithTagVo } from "./item.vo"
+import { ApiProperty } from '@nestjs/swagger'
+import { ItemWithTagVo } from './item.vo'
 
 export class FindAllItemsVo {
   // 作为值，应该写为 [ItemWithTagVo]，而不是 ItemWithTagVo[]

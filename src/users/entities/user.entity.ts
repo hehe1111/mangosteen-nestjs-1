@@ -3,29 +3,29 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+  UpdateDateColumn
+} from 'typeorm'
 
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({
     length: 50,
-    comment: '邮箱地址',
+    comment: '邮箱地址'
   })
-  email: string;
+  email: string
 
   @CreateDateColumn({
     name: 'created_at',
-    comment: '用户创建时间',
+    comment: '用户创建时间'
   })
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn({
     name: 'updated_at',
-    comment: '用户更新时间',
+    comment: '用户更新时间'
   })
-  updatedAt: Date;
+  updatedAt: Date
 }

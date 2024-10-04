@@ -1,5 +1,5 @@
-import { ApiPropertyOptional } from "@nestjs/swagger";
-import { ItemVo, ItemWithTagVo } from "./item.vo";
+import { ApiPropertyOptional } from '@nestjs/swagger'
+import { ItemVo, ItemWithTagVo } from './item.vo'
 
 export class CommonItemVo {
   @ApiPropertyOptional()

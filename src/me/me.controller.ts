@@ -1,8 +1,8 @@
-import { Controller, Get, Inject, Req } from '@nestjs/common';
-import { Request } from 'express';
-import { MeService } from './me.service';
-import { Doc } from 'src/doc/doc.decorator';
-import { GetUserInfoVo } from './vo/get-user-info.vo';
+import { Controller, Get, Inject, Req } from '@nestjs/common'
+import { Request } from 'express'
+import { MeService } from './me.service'
+import { Doc } from 'src/doc/doc.decorator'
+import { GetUserInfoVo } from './vo/get-user-info.vo'
 
 declare module 'express' {
   interface Request {
@@ -15,7 +15,7 @@ declare module 'express' {
 @Controller('me')
 export class MeController {
   @Inject(MeService)
-  private meService: MeService;
+  private meService: MeService
 
   @Doc('getUserInfo')
   @Get()
