@@ -8,6 +8,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 // import { LoginGuardGuard } from './login-guard/login-guard.guard';
 // import { RequestMethod } from '@nestjs/common';
 
+declare module '@nestjs/swagger' {
+  interface SwaggerCustomOptions {
+    customSwaggerUiDistExternalUrl?: string
+  }
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
